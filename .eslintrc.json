@@ -1,0 +1,30 @@
+{
+  "extends": ["airbnb", "plugin:react/recommended", "prettier"],
+  "plugins": ["react", "prettier"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "singleQuote": true,
+        "tabWidth": 4,
+        "bracketSameLine": true,
+        "endOfLine": "auto"
+      }
+    ],
+    "no-console": "off",
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  }
+}
