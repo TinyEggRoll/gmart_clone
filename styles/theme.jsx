@@ -1,19 +1,45 @@
 import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
 
 // Create a theme instance.
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#556cd6',
+            main: '#fa7000',
         },
         secondary: {
-            main: '#19857b',
+            main: '#8d9091',
         },
-        error: {
-            main: red.A400,
+        text: {
+            main: '#000',
         },
     },
+    components: {
+        MuiButton: {
+            defaultProps: {
+                disableRipple: true,
+            },
+            styleOverrides: {
+                root: {
+                    '&:hover': {
+                        backgroundColor: '',
+                    },
+                },
+            },
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '0.25rem',
+                },
+            },
+        },
+        MuiLink: {
+            defaultProps: {
+                underline: 'none',
+            },
+        },
+    },
+    spacing: 16,
 });
 
 export default theme;

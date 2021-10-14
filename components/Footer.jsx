@@ -25,10 +25,10 @@ const Footer = () => {
                 <Box>
                     {/* Top Footer */}
                     <Box sx={{ pb: '1.5rem' }}>
-                        <MUILink sx={{ mr: '2rem', color: 'black' }}>
+                        <MUILink sx={{ mr: '2rem', color: 'text.main' }}>
                             Terms of Use
                         </MUILink>
-                        <MUILink sx={{ color: 'black' }}>Privacy</MUILink>
+                        <MUILink sx={{ color: 'text.main' }}>Privacy</MUILink>
                     </Box>
 
                     {/* Bottom Footer */}
@@ -46,30 +46,33 @@ const Footer = () => {
                             <Button
                                 sx={{
                                     ':hover': {
-                                        color: 'red',
+                                        color: 'primary.main',
                                     },
                                     mr: '1rem',
                                 }}
-                                startIcon={<FaFacebookSquare />}>
+                                startIcon={<FaFacebookSquare />}
+                                color="text">
                                 Facebook
                             </Button>
                             <Button
                                 sx={{
                                     ':hover': {
-                                        color: 'red',
+                                        color: 'primary.main',
                                     },
                                     mr: '1rem',
                                 }}
-                                startIcon={<FaInstagram />}>
+                                startIcon={<FaInstagram />}
+                                color="text">
                                 Instagram
                             </Button>
                             <Button
                                 sx={{
                                     ':hover': {
-                                        color: 'red',
+                                        color: 'primary.main',
                                     },
                                 }}
-                                startIcon={<FaTwitter />}>
+                                startIcon={<FaTwitter />}
+                                color="text">
                                 Twitter
                             </Button>
                         </Box>

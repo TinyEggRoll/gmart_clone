@@ -3,6 +3,7 @@ import {
     Box,
     Button,
     Container,
+    Drawer,
     IconButton,
     InputAdornment,
     Link as MUILink,
@@ -12,7 +13,6 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import NextLink from 'next/link';
 import Image from 'next/image';
 import {
@@ -28,34 +28,23 @@ import { AiOutlineAim } from 'react-icons/ai';
 import Footer from '../components/Footer';
 
 const Index = () => {
-    const [orderMethod, setOrderMethod] = React.useState('pickup');
+    const [orderMethod, setOrderMethod] = React.useState();
+    const [open, setOpen] = React.useState();
+
+    const styles = {
+        width: '10rem',
+    };
 
     const handleOrderMethod = (event, newMethod) => {
         console.log(newMethod);
-        if (newMethod === 'delivery') {
-            setOrderMethod('delivery');
-        } else {
-            setOrderMethod('pickup');
+        if (newMethod !== null) {
+            setOrderMethod(newMethod);
         }
     };
 
-    const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
-        '.Mui-selected': {
-            backgroundColor: 'orange',
-            color: 'white',
-        },
-        '.Mui-selected:hover': {
-            backgroundColor: 'orange',
-            color: 'white',
-        },
-    }));
-
-    const StyledToggleButton = styled(ToggleButton)(() => ({
-        ' :hover': {
-            color: '#2a9d8f',
-            backgroundColor: 'transparent',
-        },
-    }));
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
 
     return (
         <>
@@ -64,11 +53,13 @@ const Index = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    bgcolor: 'gray',
+                    bgcolor: 'secondary.main',
                     height: '5rem',
+                    boxShadow: '0 3px 5px rgb(0 0 0 / 40%)',
                 }}
                 maxWidth="false">
                 <Box sx={{ width: '15%' }}>
+                    <Button onClick={handleDrawerOpen} />
                     <NextLink href="/">
                         <IconButton
                             sx={{
@@ -90,15 +81,14 @@ const Index = () => {
                     sx={{
                         width: '65%',
                         bgcolor: 'white',
-                        borderRadius: '.25rem',
                     }}
                     size="small"
                     autoFocus
                     placeholder="Search Products"
                     InputProps={{
                         endAdornment: (
-                            <InputAdornment position="end">
-                                <FaSearch color="orange" />
+                            <InputAdornment>
+                                <FaSearch />
                             </InputAdornment>
                         ),
                     }}
@@ -111,15 +101,37 @@ const Index = () => {
                     </Button>
                     <Button
                         sx={{
+                            color: 'primary.main',
                             bgcolor: 'white',
-                            color: 'orange',
+                            '&:hover': {
+                                bgcolor: 'white',
+                            },
                         }}
                         variant="contained"
                         startIcon={<FaShoppingCart />}>
                         Cart
                     </Button>
+                    <Drawer
+                        sx={{
+                            flexShrink: 0,
+                            '& .MuiDrawer-paper': {
+                                width: '25rem',
+                            },
+                        }}
+                        open={open}
+                        anchor="right">
+                        <FaShoppingCart
+                            sx={{
+                                color: 'primary.main',
+                                bgcolor: 'white',
+                            }}
+                            color="red"
+                        />
+                        <Typography>hi there</Typography>
+                    </Drawer>
                 </Box>
             </Container>
+            {/* Bottom Half of Nav Bar Header */}
             <Container
                 sx={{
                     display: 'flex',
@@ -128,13 +140,12 @@ const Index = () => {
                 }}
                 maxWidth="xl">
                 <IconButton>
-                    <AiOutlineAim />
+                    <AiOutlineAim color="orange" />
                 </IconButton>
                 <TextField
                     sx={{
                         minWidth: '30%',
                         bgcolor: 'white',
-                        borderRadius: '.25rem',
                     }}
                     size="small"
                     placeholder="Pick up at: Enter your zip code or address"
@@ -148,24 +159,41 @@ const Index = () => {
                         <FaInfoCircle />
                     </IconButton>
                 </Tooltip>
-                <StyledToggleButtonGroup
+                <ToggleButtonGroup
                     sx={{
-                        '& :hover': {
-                            backgroundColor: '',
+                        '.MuiToggleButton-root.Mui-selected': {
+                            bgcolor: 'primary.main',
+                            color: 'white',
+                        },
+                        '.MuiToggleButton-root.Mui-selected:hover': {
+                            bgcolor: 'primary.main',
+                            color: 'white',
+                        },
+                        '.MuiToggleButton-root:hover': {
+                            bgcolor: 'transparent',
+                            color: 'primary.main',
                         },
                     }}
                     exclusive
                     value={orderMethod}
                     onChange={handleOrderMethod}>
-                    <StyledToggleButton value="delivery">
+                    <ToggleButton
+                        sx={{
+                            ...styles,
+                        }}
+                        value="delivery">
                         <FaTruck size="1.5rem" />
                         <Typography sx={{ ml: '1rem' }}>DELIVERY</Typography>
-                    </StyledToggleButton>
-                    <StyledToggleButton sx={{ width: '10rem' }} value="pickup">
+                    </ToggleButton>
+                    <ToggleButton
+                        sx={{
+                            ...styles,
+                        }}
+                        value="pickup">
                         <FaRegClock size="1.5rem" />
                         <Typography sx={{ ml: '1rem' }}>PICK-UP</Typography>
-                    </StyledToggleButton>
-                </StyledToggleButtonGroup>
+                    </ToggleButton>
+                </ToggleButtonGroup>
             </Container>
             <Footer />
         </>
