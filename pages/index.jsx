@@ -19,32 +19,22 @@ import {
 } from '@mui/material';
 import NextLink from 'next/link';
 import Image from 'next/image';
-import {
-    FaSearch,
-    FaUserCircle,
-    FaInfoCircle,
-    FaRegClock,
-    FaTruck,
-} from 'react-icons/fa';
-import {
-    AiOutlineAim,
-    AiOutlineClose,
-    AiOutlineShoppingCart,
-} from 'react-icons/ai';
+import { FaSearch, FaUserCircle, FaInfoCircle, FaRegClock, FaTruck } from 'react-icons/fa';
+import { AiOutlineAim, AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai';
 
 import Footer from '../components/Footer';
 
 const Index = () => {
     const [orderMethod, setOrderMethod] = React.useState('pickup');
     const [salutations, setSalutations] = React.useState('mrs');
-    const [open, setOpen] = React.useState();
-    const [open1, setOpen1] = React.useState();
-    const [anchor, setAnchor] = React.useState(null);
+    const [accountPopover, setAccountPopover] = React.useState();
+    const [accountPopoverAnchor, setAccountPopoverAnchor] = React.useState(null);
+    const [signUpModal, setSignUpModal] = React.useState(false);
+    const [signInModal, setSignInModal] = React.useState(false);
+    const [forgotPasswordModal, setForgotPasswordModal] = React.useState(false);
 
     const handleClick = (event) => {
-        setAnchor(event.currentTarget);
-        // setAnchor(true);
-        console.log('this is event target', event.currentTarget);
+        setAccountPopoverAnchor(event.currentTarget);
     };
 
     const style = {
@@ -79,6 +69,13 @@ const Index = () => {
         }
     };
 
+    const testing1234 = () => {
+        setSignInModal(false);
+        setForgotPasswordModal(() => {
+            return true;
+        });
+    };
+
     return (
         <>
             <Container
@@ -89,8 +86,7 @@ const Index = () => {
                     bgcolor: 'secondary.main',
                     height: '5rem',
                     boxShadow: '0 3px 5px rgb(0 0 0 / 40%)',
-                    // Consider changing the padding left and right
-                    // pl: ['null', 'null', 'null', '1rem', '1rem'],
+                    // Consider changing the padding left and right  pl: ['null', 'null', 'null', '1rem', '1rem'],
                     // pr: ['null', 'null', 'null', '1rem', '1rem'],
                     // backgroundColor: ['null', 'null', 'null', 'red', 'green'],
                 }}
@@ -104,12 +100,7 @@ const Index = () => {
                                 },
                                 p: '0',
                             }}>
-                            <Image
-                                src="/images/logo.png"
-                                width={170}
-                                height={70}
-                                alt="logo"
-                            />
+                            <Image src="/images/logo.png" width={170} height={70} alt="logo" />
                         </IconButton>
                     </NextLink>
                 </Box>
@@ -123,14 +114,504 @@ const Index = () => {
                     placeholder="Search Products"
                     InputProps={{
                         endAdornment: (
-                            <InputAdornment
-                                sx={{ color: 'primary.main' }}
-                                position="end">
+                            <InputAdornment sx={{ color: 'primary.main' }} position="end">
                                 <FaSearch />
                             </InputAdornment>
                         ),
                     }}
                 />
+                <Modal open={forgotPasswordModal} onClose={() => setForgotPasswordModal(false)}>
+                    <Box
+                        sx={style}
+                        onSubmit={() => console.log('remember to create onsubmit handler')}>
+                        {/* Top Heading */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                p: '1rem',
+                                borderBottom: 'solid 1px #e5e5e5',
+                            }}>
+                            <Box sx={{ display: 'flex' }}>
+                                <Typography variant="h5" sx={{ fontWeight: '600' }}>
+                                    Restore password
+                                </Typography>
+                            </Box>
+                            <IconButton
+                                onClick={() => {
+                                    setForgotPasswordModal(false);
+                                }}>
+                                <AiOutlineClose />
+                            </IconButton>
+                        </Box>
+                        {/* Main Content */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                mt: '.5rem',
+                                p: '.625rem 1rem',
+                                paddingBottom: '1rem',
+                            }}
+                            noValidate
+                            component="form">
+                            <Box
+                                sx={{
+                                    marginTop: '1rem',
+                                    width: '100%',
+                                }}>
+                                <Typography sx={{ ...styles2 }}>E-mail</Typography>
+                                <TextField
+                                    sx={{
+                                        '.MuiFilledInput-root': {
+                                            height: '2.6rem',
+                                        },
+                                        '.MuiFilledInput-input': {
+                                            p: '.75rem',
+                                        },
+                                        '.MuiFilledInput-root.Mui-focused': {
+                                            boxShadow:
+                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
+                                        },
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                />
+                            </Box>
+                            <Button
+                                sx={{
+                                    color: 'white',
+                                    bgcolor: 'primary.main',
+                                    my: '1rem',
+                                    textTransform: 'none',
+                                    ':hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                                type="submit">
+                                Restore
+                            </Button>
+                        </Box>
+                        <Box
+                            sx={{
+                                borderTop: 'solid 1px #e5e5e5',
+                                textAlign: 'center',
+                                py: '1.25rem',
+                                bgcolor: '#f2f2f2',
+                            }}>
+                            <Typography>
+                                Back to{' '}
+                                <MUILink
+                                    href="#"
+                                    onClick={() => {
+                                        setForgotPasswordModal(false);
+                                        setSignInModal(true);
+                                    }}>
+                                    Sign In
+                                </MUILink>
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Modal>
+
+                <Modal open={signInModal} onClose={() => setSignInModal(false)}>
+                    <Box
+                        sx={style}
+                        component="form"
+                        noValidate
+                        onSubmit={() => console.log('remember to create onsubmit handler')}>
+                        {/* Top Heading */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                p: '1rem',
+                                borderBottom: 'solid 1px #e5e5e5',
+                            }}>
+                            <Box sx={{ display: 'flex' }}>
+                                <Typography variant="h5" sx={{ fontWeight: '600' }}>
+                                    Sign In
+                                </Typography>
+                            </Box>
+                            <IconButton onClick={() => setSignInModal(false)}>
+                                <AiOutlineClose />
+                            </IconButton>
+                        </Box>
+                        {/* Main Content */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                mt: '.5rem',
+                                p: '.625rem 1rem',
+                                paddingBottom: '1rem',
+                            }}
+                            noValidate
+                            component="form">
+                            <Box
+                                sx={{
+                                    marginTop: '1rem',
+                                    width: '100%',
+                                }}>
+                                <Typography sx={{ ...styles2 }}>E-mail</Typography>
+                                <TextField
+                                    sx={{
+                                        '.MuiFilledInput-root': {
+                                            height: '2.6rem',
+                                        },
+                                        '.MuiFilledInput-input': {
+                                            p: '.75rem',
+                                        },
+                                        '.MuiFilledInput-root.Mui-focused': {
+                                            boxShadow:
+                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
+                                        },
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={{ marginTop: '1rem' }}>
+                                <Typography sx={{ ...styles2 }}>Password</Typography>
+                                <TextField
+                                    sx={{
+                                        '.MuiFilledInput-root': {
+                                            height: '2.6rem',
+                                        },
+                                        '.MuiFilledInput-input': {
+                                            p: '.75rem',
+                                        },
+                                        '.MuiFilledInput-root.Mui-focused': {
+                                            boxShadow:
+                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
+                                        },
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                />
+                            </Box>
+
+                            <Button
+                                sx={{
+                                    color: 'white',
+                                    bgcolor: 'primary.main',
+                                    my: '1rem',
+                                    textTransform: 'none',
+                                    ':hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                                type="submit">
+                                Sign In
+                            </Button>
+                            <MUILink
+                                sx={{
+                                    textAlign: 'center',
+                                    color: 'primary.main',
+                                    fontWeight: '500',
+                                }}
+                                href="#"
+                                onClick={() => {
+                                    setSignInModal(false);
+                                    setSignUpModal(true);
+                                }}>
+                                Sign up today!
+                            </MUILink>
+                        </Box>
+                        <Box
+                            sx={{
+                                borderTop: 'solid 1px #e5e5e5',
+                                textAlign: 'center',
+                                py: '1.25rem',
+                            }}>
+                            <MUILink
+                                href="#"
+                                onClick={() => {
+                                    setSignInModal(false);
+                                    setForgotPasswordModal(true);
+                                }}>
+                                Forgot your password?
+                            </MUILink>
+                        </Box>
+                    </Box>
+                </Modal>
+
+                <Modal open={signUpModal} onClose={() => setSignUpModal(false)}>
+                    <Box
+                        sx={style}
+                        component="form"
+                        noValidate
+                        onSubmit={() => console.log('remember to create onsubmit handler')}>
+                        {/* Top Heading */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                p: '1rem',
+                                borderBottom: 'solid 1px #e5e5e5',
+                            }}>
+                            <Box sx={{ display: 'flex' }}>
+                                <Typography variant="h5" sx={{ fontWeight: '600' }}>
+                                    Let&apos;s start!
+                                </Typography>
+                            </Box>
+                            <IconButton onClick={() => setSignUpModal(false)}>
+                                <AiOutlineClose />
+                            </IconButton>
+                        </Box>
+                        {/* Main Content */}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                mt: '.5rem',
+                                p: '.625rem 1rem',
+                            }}
+                            noValidate
+                            component="form">
+                            <Box>
+                                <Typography sx={{ ...styles2 }}>Salutation</Typography>
+                                <ToggleButtonGroup
+                                    sx={{
+                                        '& .MuiToggleButton-root.Mui-selected': {
+                                            bgcolor: 'primary.main',
+                                            color: 'white',
+                                        },
+                                        '& .MuiToggleButton-root.Mui-selected:hover': {
+                                            bgcolor: 'primary.main',
+                                            color: 'white',
+                                        },
+                                        '& .MuiToggleButton-root:hover': {
+                                            bgcolor: 'transparent',
+                                            color: 'primary.main',
+                                        },
+                                    }}
+                                    exclusive
+                                    value={salutations}
+                                    onChange={handleSalutations}>
+                                    <ToggleButton
+                                        sx={{
+                                            color: 'text.main',
+                                            fontSize: '1rem',
+                                            textTransform: 'none',
+                                        }}
+                                        value="unknown">
+                                        Unknown
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        sx={{
+                                            color: 'text.main',
+                                            fontSize: '1rem',
+                                            textTransform: 'none',
+                                        }}
+                                        value="mr">
+                                        Mr
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        sx={{
+                                            color: 'text.main',
+                                            fontSize: '1rem',
+                                            textTransform: 'none',
+                                        }}
+                                        value="mrs">
+                                        Mrs
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        sx={{
+                                            color: 'text.main',
+                                            fontSize: '1rem',
+                                            textTransform: 'none',
+                                        }}
+                                        value="ms">
+                                        Ms
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginTop: '1rem',
+                                    width: '100%',
+                                }}>
+                                <Typography sx={{ ...styles2 }}>First Name</Typography>
+                                <TextField
+                                    sx={{
+                                        '.MuiFilledInput-root': {
+                                            height: '2.6rem',
+                                        },
+                                        '.MuiFilledInput-input': {
+                                            p: '.75rem',
+                                        },
+                                        '.MuiFilledInput-root.Mui-focused': {
+                                            boxShadow:
+                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
+                                        },
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={{ marginTop: '1rem' }}>
+                                <Typography sx={{ ...styles2 }}>Last Name</Typography>
+                                <TextField
+                                    sx={{
+                                        '.MuiFilledInput-root': {
+                                            height: '2.6rem',
+                                        },
+                                        '.MuiFilledInput-input': {
+                                            p: '.75rem',
+                                        },
+                                        '.MuiFilledInput-root.Mui-focused': {
+                                            boxShadow:
+                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
+                                        },
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={{ marginTop: '1rem' }}>
+                                <Typography sx={{ ...styles2 }}>E-mail</Typography>
+                                <TextField
+                                    sx={{
+                                        '.MuiFilledInput-root': {
+                                            height: '2.6rem',
+                                        },
+                                        '.MuiFilledInput-input': {
+                                            p: '.75rem',
+                                        },
+                                        '.MuiFilledInput-root.Mui-focused': {
+                                            boxShadow:
+                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
+                                        },
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={{ marginTop: '1rem' }}>
+                                <Typography sx={{ ...styles2 }}>Password</Typography>
+                                <TextField
+                                    sx={{
+                                        '.MuiFilledInput-root': {
+                                            height: '2.6rem',
+                                        },
+                                        '.MuiFilledInput-input': {
+                                            p: '.75rem',
+                                        },
+                                        '.MuiFilledInput-root.Mui-focused': {
+                                            boxShadow:
+                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
+                                        },
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                />
+                            </Box>
+                            <Box sx={{ marginTop: '1rem' }}>
+                                <Typography sx={{ ...styles2 }}>Confirm Password</Typography>
+                                <TextField
+                                    sx={{
+                                        '.MuiFilledInput-root': {
+                                            height: '2.6rem',
+                                        },
+                                        '.MuiFilledInput-input': {
+                                            p: '.75rem',
+                                        },
+                                        '.MuiFilledInput-root.Mui-focused': {
+                                            boxShadow:
+                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
+                                        },
+                                    }}
+                                    variant="filled"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                    }}
+                                />
+                            </Box>
+                            {/* Check Boxes For Agreement */}
+                            <Box>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        marginTop: '1rem',
+                                    }}>
+                                    <Checkbox size="small" />
+                                    <Typography variant="caption">
+                                        Agree to <MUILink>terms &#38; conditions </MUILink>
+                                        and <MUILink>privacy policy</MUILink>
+                                    </Typography>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}>
+                                    <Checkbox defaultChecked size="small" />
+                                    <Typography variant="caption">
+                                        Email me exclusive offers, sales alerts &#38; more
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <Button
+                                sx={{
+                                    color: 'white',
+                                    bgcolor: 'primary.main',
+                                    my: '1rem',
+                                    textTransform: 'none',
+                                    ':hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                                type="submit">
+                                Sign Up
+                            </Button>
+                        </Box>
+                        <Box
+                            sx={{
+                                borderTop: 'solid 1px #e5e5e5',
+                                textAlign: 'center',
+                                py: '1.25rem',
+                                bgcolor: '#f2f2f2',
+                            }}>
+                            <MUILink
+                                href="#"
+                                onClick={() => {
+                                    setSignUpModal(false);
+                                    setSignInModal(true);
+                                }}>
+                                Already have an account?
+                            </MUILink>
+                        </Box>
+                    </Box>
+                </Modal>
+
                 <Box sx={{ textAlign: 'end', width: '20%' }}>
                     <Button
                         sx={{ color: 'white', mr: '1.5rem' }}
@@ -139,9 +620,9 @@ const Index = () => {
                         Profile
                     </Button>
                     <Popover
-                        open={Boolean(anchor)}
-                        anchorEl={anchor}
-                        onClose={() => setAnchor(null)}
+                        open={Boolean(accountPopoverAnchor)}
+                        anchorEl={accountPopoverAnchor}
+                        onClose={() => setAccountPopoverAnchor(null)}
                         anchorOrigin={{
                             vertical: 'bottom',
                             horizontal: 'right',
@@ -165,7 +646,8 @@ const Index = () => {
                                         color: 'primary.main',
                                         bgcolor: 'transparent',
                                     },
-                                }}>
+                                }}
+                                onClick={() => setSignInModal(true)}>
                                 Sign In
                             </Button>
 
@@ -174,299 +656,11 @@ const Index = () => {
                                     color: 'text.main',
                                     ':hover': {
                                         color: 'primary.main',
-                                        bgcolor: 'transparent',
                                     },
                                 }}
-                                onClick={() => setOpen1(true)}>
+                                onClick={() => setSignUpModal(true)}>
                                 Sign Up
                             </Button>
-                            <Modal open={open1} onClose={() => setOpen1(false)}>
-                                <Box sx={style}>
-                                    {/* Top Heading */}
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            p: '1rem',
-                                            borderBottom: 'solid 1px #e5e5e5',
-                                        }}>
-                                        <Box sx={{ display: 'flex' }}>
-                                            <Typography
-                                                variant="h5"
-                                                sx={{ fontWeight: '600' }}>
-                                                Let&apos;s start!
-                                            </Typography>
-                                        </Box>
-                                        <IconButton
-                                            onClick={() => setOpen1(false)}>
-                                            <AiOutlineClose />
-                                        </IconButton>
-                                    </Box>
-                                    {/* Main Content */}
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            mt: '.5rem',
-                                            p: '.625rem 1rem',
-                                        }}
-                                        noValidate
-                                        component="form">
-                                        <Box>
-                                            <Typography sx={{ ...styles2 }}>
-                                                Salutation
-                                            </Typography>
-                                            <ToggleButtonGroup
-                                                sx={{
-                                                    '& .MuiToggleButton-root.Mui-selected':
-                                                        {
-                                                            bgcolor:
-                                                                'primary.main',
-                                                            color: 'white',
-                                                        },
-                                                    '& .MuiToggleButton-root.Mui-selected:hover':
-                                                        {
-                                                            bgcolor:
-                                                                'primary.main',
-                                                            color: 'white',
-                                                        },
-                                                    '& .MuiToggleButton-root:hover':
-                                                        {
-                                                            bgcolor:
-                                                                'transparent',
-                                                            color: 'primary.main',
-                                                        },
-                                                }}
-                                                exclusive
-                                                value={salutations}
-                                                onChange={handleSalutations}>
-                                                <ToggleButton
-                                                    sx={{
-                                                        color: 'text.main',
-                                                        fontSize: '1rem',
-                                                        textTransform: 'none',
-                                                    }}
-                                                    value="unknown">
-                                                    Unknown
-                                                </ToggleButton>
-                                                <ToggleButton
-                                                    sx={{
-                                                        color: 'text.main',
-                                                        fontSize: '1rem',
-                                                        textTransform: 'none',
-                                                    }}
-                                                    value="mr">
-                                                    Mr
-                                                </ToggleButton>
-                                                <ToggleButton
-                                                    sx={{
-                                                        color: 'text.main',
-                                                        fontSize: '1rem',
-                                                        textTransform: 'none',
-                                                    }}
-                                                    value="mrs">
-                                                    Mrs
-                                                </ToggleButton>
-                                                <ToggleButton
-                                                    sx={{
-                                                        color: 'text.main',
-                                                        fontSize: '1rem',
-                                                        textTransform: 'none',
-                                                    }}
-                                                    value="ms">
-                                                    Ms
-                                                </ToggleButton>
-                                            </ToggleButtonGroup>
-                                        </Box>
-                                        <Box
-                                            sx={{
-                                                marginTop: '1rem',
-                                                width: '100%',
-                                            }}>
-                                            <Typography sx={{ ...styles2 }}>
-                                                First Name
-                                            </Typography>
-                                            <TextField
-                                                sx={{
-                                                    '.MuiFilledInput-root': {
-                                                        height: '2.6rem',
-                                                    },
-                                                    '.MuiFilledInput-input': {
-                                                        p: '.75rem',
-                                                    },
-                                                    '.MuiFilledInput-root.Mui-focused':
-                                                        {
-                                                            boxShadow:
-                                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
-                                                        },
-                                                }}
-                                                variant="filled"
-                                                fullWidth
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                }}
-                                            />
-                                        </Box>
-                                        <Box sx={{ marginTop: '1rem' }}>
-                                            <Typography sx={{ ...styles2 }}>
-                                                Last Name
-                                            </Typography>
-                                            <TextField
-                                                sx={{
-                                                    '.MuiFilledInput-root': {
-                                                        height: '2.6rem',
-                                                    },
-                                                    '.MuiFilledInput-input': {
-                                                        p: '.75rem',
-                                                    },
-                                                    '.MuiFilledInput-root.Mui-focused':
-                                                        {
-                                                            boxShadow:
-                                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
-                                                        },
-                                                }}
-                                                variant="filled"
-                                                fullWidth
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                }}
-                                            />
-                                        </Box>
-                                        <Box sx={{ marginTop: '1rem' }}>
-                                            <Typography sx={{ ...styles2 }}>
-                                                E-mail
-                                            </Typography>
-                                            <TextField
-                                                sx={{
-                                                    '.MuiFilledInput-root': {
-                                                        height: '2.6rem',
-                                                    },
-                                                    '.MuiFilledInput-input': {
-                                                        p: '.75rem',
-                                                    },
-                                                    '.MuiFilledInput-root.Mui-focused':
-                                                        {
-                                                            boxShadow:
-                                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
-                                                        },
-                                                }}
-                                                variant="filled"
-                                                fullWidth
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                }}
-                                            />
-                                        </Box>
-                                        <Box sx={{ marginTop: '1rem' }}>
-                                            <Typography sx={{ ...styles2 }}>
-                                                Password
-                                            </Typography>
-                                            <TextField
-                                                sx={{
-                                                    '.MuiFilledInput-root': {
-                                                        height: '2.6rem',
-                                                    },
-                                                    '.MuiFilledInput-input': {
-                                                        p: '.75rem',
-                                                    },
-                                                    '.MuiFilledInput-root.Mui-focused':
-                                                        {
-                                                            boxShadow:
-                                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
-                                                        },
-                                                }}
-                                                variant="filled"
-                                                fullWidth
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                }}
-                                            />
-                                        </Box>
-                                        <Box sx={{ marginTop: '1rem' }}>
-                                            <Typography sx={{ ...styles2 }}>
-                                                Confirm Password
-                                            </Typography>
-                                            <TextField
-                                                sx={{
-                                                    '.MuiFilledInput-root': {
-                                                        height: '2.6rem',
-                                                    },
-                                                    '.MuiFilledInput-input': {
-                                                        p: '.75rem',
-                                                    },
-                                                    '.MuiFilledInput-root.Mui-focused':
-                                                        {
-                                                            boxShadow:
-                                                                'inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%)',
-                                                        },
-                                                }}
-                                                variant="filled"
-                                                fullWidth
-                                                InputProps={{
-                                                    disableUnderline: true,
-                                                }}
-                                            />
-                                        </Box>
-                                        {/* Check Boxes For Agreement */}
-                                        <Box>
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    marginTop: '1rem',
-                                                }}>
-                                                <Checkbox size="small" />
-                                                <Typography variant="caption">
-                                                    Agree to{' '}
-                                                    <MUILink>
-                                                        terms &#38; conditions{' '}
-                                                    </MUILink>
-                                                    and{' '}
-                                                    <MUILink>
-                                                        privacy policy
-                                                    </MUILink>
-                                                </Typography>
-                                            </Box>
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                }}>
-                                                <Checkbox
-                                                    defaultChecked
-                                                    size="small"
-                                                />
-                                                <Typography variant="caption">
-                                                    Email me exclusive offers,
-                                                    sales alerts &#38; more
-                                                </Typography>
-                                            </Box>
-                                        </Box>
-
-                                        <Button
-                                            sx={{
-                                                color: 'white',
-                                                bgcolor: 'primary.main',
-                                                my: '1rem',
-                                                textTransform: 'none',
-                                            }}>
-                                            Sign Up
-                                        </Button>
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            borderTop: 'solid 1px #e5e5e5',
-                                            textAlign: 'center',
-                                            py: '1.25rem',
-                                            bgcolor: '#f2f2f2',
-                                        }}>
-                                        <MUILink>
-                                            Already have an account?
-                                        </MUILink>
-                                    </Box>
-                                </Box>
-                            </Modal>
                         </Box>
                     </Popover>
                     <Button
@@ -478,7 +672,7 @@ const Index = () => {
                             },
                         }}
                         variant="contained"
-                        onClick={() => setOpen(true)}
+                        onClick={() => setAccountPopover(true)}
                         startIcon={<AiOutlineShoppingCart />}>
                         Cart
                     </Button>
@@ -489,7 +683,7 @@ const Index = () => {
                                 width: '25rem',
                             },
                         }}
-                        open={open}
+                        open={accountPopover}
                         anchor="right">
                         <Box>
                             <Box
@@ -512,7 +706,7 @@ const Index = () => {
                                         Your Cart
                                     </Typography>
                                 </Box>
-                                <IconButton onClick={() => setOpen(false)}>
+                                <IconButton onClick={() => setAccountPopover(false)}>
                                     <AiOutlineClose />
                                 </IconButton>
                             </Box>
@@ -540,9 +734,7 @@ const Index = () => {
                                         alignItems: 'center',
                                         mt: '5rem',
                                     }}>
-                                    <Typography variant="h5">
-                                        Your cart is empty
-                                    </Typography>
+                                    <Typography variant="h5">Your cart is empty</Typography>
                                     <Button
                                         variant="contained"
                                         fullWidth

@@ -10,6 +10,7 @@
     "prettier/prettier": [
       "warn",
       {
+        "printWidth": 100,
         "singleQuote": true,
         "tabWidth": 4,
         "bracketSameLine": true,

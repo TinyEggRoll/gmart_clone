@@ -12,6 +12,9 @@ const theme = createTheme({
         text: {
             main: '#000',
         },
+        textWhite: {
+            main: '#fff',
+        },
     },
     components: {
         MuiButton: {
