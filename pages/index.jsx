@@ -27,133 +27,143 @@ import TopNavBar from '../components/TopNavBar';
 import BottomNavBar from '../components/BottomNavBar';
 import DepartmentSection from '../components/DepartmentSection';
 import FilterButton from '../components/FilterButton';
+import DepartmentButton from '../components/DepartmentButton';
 
 const Index = () => {
+    const arrayOfDepartments = [
+        {
+            iconSrc: '/images/department_icons/alcohol.svg',
+            name: 'Alcohol',
+            imgSrc: '/images/department_images/alcohol.png',
+        },
+        {
+            iconSrc: '/images/department_icons/beverage.svg',
+            name: 'Beverage',
+            imgSrc: '/images/department_images/beverage.jpeg',
+        },
+        {
+            iconSrc: '/images/department_icons/bread_bakery.svg',
+            name: 'Bread & Bakery',
+            imgSrc: '/images/department_images/bread_bakery.jpeg',
+        },
+        {
+            iconSrc: '/images/department_icons/canned_products.svg',
+            name: 'Canned Products',
+            imgSrc: '/images/department_images/canned_products.jpeg',
+        },
+        {
+            iconSrc: '/images/department_icons/cooking_wine_oil_vinegar.svg',
+            name: 'Cooking Wine & Oil & Vinegar',
+            imgSrc: '/images/department_images/cooking_wine_oil_vinegar.jpg',
+        },
+        {
+            iconSrc: '/images/department_icons/dairy_eggs.svg',
+            name: 'Dairy & Eggs',
+            imgSrc: '/images/department_images/dairy_eggs.jpg',
+        },
+        {
+            iconSrc: '/images/department_icons/dried_vegetable.svg',
+            name: 'Dried Vegetables',
+            imgSrc: '/images/department_images/dried_vegetable.jpg',
+        },
+        {
+            iconSrc: '/images/department_icons/frozen.svg',
+            name: 'Frozen',
+            imgSrc: '/images/department_images/frozen.jpeg',
+        },
+        {
+            iconSrc: '/images/department_icons/grain.svg',
+            name: 'Grain',
+            imgSrc: '/images/department_images/grain.jpg',
+        },
+        {
+            iconSrc: '/images/department_icons/housewares.svg',
+            name: 'Housewares',
+            imgSrc: '/images/department_images/housewares.jpeg',
+        },
+        {
+            iconSrc: '/images/department_icons/meat_seafood.svg',
+            name: 'Meat & Seafood',
+            imgSrc: '/images/department_images/meat_seafood.png',
+        },
+        {
+            iconSrc: '/images/department_icons/noodle.svg',
+            name: 'Noodle',
+            imgSrc: '/images/department_images/noodle.jpg',
+        },
+        {
+            iconSrc: '/images/department_icons/produce.svg',
+            name: 'Produce',
+            imgSrc: '/images/department_images/produce.png',
+        },
+        {
+            iconSrc: '/images/department_icons/refrigerated.svg',
+            name: 'Refrigerated',
+            imgSrc: '/images/department_images/refrigerated.jpeg',
+        },
+        {
+            iconSrc: '/images/department_icons/sauce_paste.svg',
+            name: 'Sauce & Paste',
+            imgSrc: '/images/department_images/sauce_paste.jpg',
+        },
+        {
+            iconSrc: '/images/department_icons/seasoning_spices.svg',
+            name: 'Seasoning & Spices',
+            imgSrc: '/images/department_images/seasoning_spices.jpg',
+        },
+        {
+            iconSrc: '/images/department_icons/seaweed.svg',
+            name: 'Seaweed',
+            imgSrc: '/images/department_images/seaweed.jpg',
+        },
+        {
+            iconSrc: '/images/department_icons/snack_candy.svg',
+            name: 'Snack & Candy',
+            imgSrc: '/images/department_images/snack_candy.jpeg',
+        },
+        {
+            iconSrc: '/images/department_icons/tea_coffee_breakfast.svg',
+            name: 'Tea & Coffee & Breakfast',
+            imgSrc: '/images/department_images/tea_coffee_breakfast.jpg',
+        },
+    ];
+
+    arrayOfDepartments.unshift({
+        name: "Today's Deals",
+        imgSrc: '/images/department_images/today_deals.png',
+    });
+
     return (
         <>
-            <Box sx={{ mt: '5rem' }}>
+            <Box sx={{ mt: '5rem', bgcolor: 'backGround.main', height: '100rem' }}>
                 <TopNavBar />
                 <BottomNavBar />
 
-                <Container
-                    sx={{
-                        display: 'flex',
-                        bgcolor: 'backGround.main',
-                        height: '2000px',
-                        pt: '1.875rem',
-                    }}
-                    maxWidth="xl">
-                    {/* Left Side of Main Screen */}
+                <Container sx={{ mt: '1rem' }} maxWidth="xl">
+                    {/* Coupon Banner */}
                     <Box
                         sx={{
-                            width: '20%',
-                            mr: '1rem',
-                            maxHeight: '100vh',
-                            position: 'sticky',
-                            top: '6rem',
-                        }}>
-                        <Typography sx={{ fontWeight: '500', mb: '1rem' }} variant="h4">
-                            Departments
-                        </Typography>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                maxHeight: '90%',
-                                overflow: 'auto',
-                                '&::-webkit-scrollbar': {
-                                    width: 5,
-                                },
-                                '&::-webkit-scrollbar-thumb': {
-                                    backgroundColor: '#c4c4c4',
-                                },
-                            }}>
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/alcohol.svg"
-                                department="Alcohol"
+                            backgroundImage: 'url(/images/discountBanner.jpg)',
+                            minHeight: '12.5rem',
+                            overflow: 'hidden',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            p: '1rem',
+                            mb: '1rem',
+                            borderRadius: '.5rem',
+                        }}
+                        maxWidth="xl"
+                    />
+                    {/* List of Department Buttons */}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
+                        {arrayOfDepartments.map((department) => (
+                            <DepartmentButton
+                                key={department.name}
+                                imgSrc={department.imgSrc}
+                                name={department.name}
+                                categories={department.categories}
                             />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/beverage.svg"
-                                department="Beverage"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/bread_bakery.svg"
-                                department="Bread &amp; Bakery"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/cooking_wine_oil_vinegar.svg"
-                                department="Cooking Wine &amp; Oil &amp; Vinegar"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/dairy_eggs.svg"
-                                department="Dairy &amp; Eggs"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/dried_vegetable.svg"
-                                department="Dried Vegetables"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/frozen.svg"
-                                department="Frozen"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/grain.svg"
-                                department="Grain"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/housewares.svg"
-                                department="Housewares"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/meat_seafood.svg"
-                                department="Meat &amp; Seafood"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/noodle.svg"
-                                department="Noodle"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/produce.svg"
-                                department="Produce"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/refrigerated.svg"
-                                department="Refrigerated"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/sauce_paste.svg"
-                                department="Sauce &amp; Paste"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/seasoning_spices.svg"
-                                department="Seasoning &amp; Spices"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/seaweed.svg"
-                                department="Seaweed"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/snack_candy.svg"
-                                department="Snack &amp; Candy"
-                            />
-                            <DepartmentSection
-                                imgSrc="/images/department_icons/tea_coffee_breakfast.svg"
-                                department="Tea &amp; Coffee &amp; Breakfast"
-                            />
-                        </Box>
-                    </Box>
-
-                    {/* Right Side of Main Screen */}
-                    <Box sx={{ width: '80%' }}>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                            }}>
-                            <FilterButton filterName="All" />
-                            <FilterButton filterName="Sake &amp; Soju" />
-                            <FilterButton filterName="Beer" />
-                            <FilterButton filterName="Wine" />
-                        </Box>
+                        ))}
                     </Box>
                 </Container>
             </Box>

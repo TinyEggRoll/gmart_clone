@@ -595,7 +595,7 @@ const NavBar = () => {
 
                 <Box sx={{ textAlign: 'end', width: '20%' }}>
                     <Button
-                        sx={{ color: 'white', mr: '1.5rem' }}
+                        sx={{ color: 'white', mr: '1.5rem', textTransform: 'none' }}
                         endIcon={<FaUserCircle size="2rem" />}
                         onClick={handleClick}>
                         Profile
@@ -648,6 +648,7 @@ const NavBar = () => {
                         sx={{
                             color: 'primary.main',
                             bgcolor: 'white',
+                            textTransform: 'none',
                             '&:hover': {
                                 bgcolor: 'white',
                             },

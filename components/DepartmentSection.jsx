@@ -1,26 +1,12 @@
 import * as React from 'react';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Container,
-    Drawer,
-    IconButton,
-    InputAdornment,
-    Link as MUILink,
-    Modal,
-    Popover,
-    TextField,
-    ToggleButton,
-    ToggleButtonGroup,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import { Box, Link as MUILink } from '@mui/material';
 import NextLink from 'next/link';
 import Image from 'next/image';
 
 const DepartmentSection = (props) => {
-    const { imgSrc, department } = props;
+    const { iconSrc, name } = props;
+
+    const depURL = iconSrc.split('/').pop().split('.').slice(0, -1).join('.');
     return (
         <>
             <Box
@@ -50,16 +36,15 @@ const DepartmentSection = (props) => {
                         transition: 'all 0.3s ease-in-out',
                     },
                 }}>
-                <Image src={imgSrc} width={30} height={30} alt="logo" />
-                <NextLink href="/" passHref>
+                <Image src={iconSrc} width={30} height={30} alt="logo" />
+                <NextLink href={`/department/${depURL}`} passHref>
                     <MUILink
                         sx={{
                             ml: '1rem',
                             color: 'text.main',
                             position: 'relative',
-                            display: 'inline-block',
                         }}>
-                        {department}
+                        {name}
                     </MUILink>
                 </NextLink>
             </Box>

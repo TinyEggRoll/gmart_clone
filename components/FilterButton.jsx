@@ -18,26 +18,52 @@ import {
     Typography,
 } from '@mui/material';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 const FilterButton = (props) => {
     const { filterName } = props;
+    const router = useRouter();
+
     return (
         <>
-            <Chip
-                sx={{
-                    mr: '1rem',
-                    borderRadius: '.625rem',
-                    p: '1rem .3125rem',
-                    ':hover': {
-                        color: 'textWhite.main',
-                        bgcolor: 'primary.main',
-                    },
-                }}
-                label={filterName}
-                href="#"
-                clickable
-            />
+            {filterName === 'All' ? (
+                <NextLink href={`/department/${filterName}`}>
+                    <Chip
+                        sx={{
+                            mr: '1rem',
+                            borderRadius: '.625rem',
+                            p: '1rem .3125rem',
+                            color: 'textWhite.main',
+                            bgcolor: 'primary.main',
+                            ':hover': {
+                                color: 'textWhite.main',
+                                bgcolor: 'primary.main',
+                            },
+                        }}
+                        label={filterName}
+                        href="#"
+                        clickable
+                    />
+                </NextLink>
+            ) : (
+                <NextLink href={`/category/${filterName}`}>
+                    <Chip
+                        sx={{
+                            mr: '1rem',
+                            borderRadius: '.625rem',
+                            p: '1rem .3125rem',
+                            ':hover': {
+                                color: 'textWhite.main',
+                                bgcolor: 'primary.main',
+                            },
+                        }}
+                        label={filterName}
+                        href="#"
+                        clickable
+                    />
+                </NextLink>
+            )}
         </>
     );
 };

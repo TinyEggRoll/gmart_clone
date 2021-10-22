@@ -10,6 +10,7 @@ const Footer = () => {
                 <Container
                     sx={{
                         width: '100%',
+                        mt: '5rem',
                     }}
                     component="footer"
                     maxWidth="xl">

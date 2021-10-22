@@ -33,7 +33,7 @@ const BottomNavBar = () => {
                     py: '.625rem',
                 }}
                 maxWidth="xl">
-                <IconButton sx={{ color: 'primary.main' }}>
+                <IconButton sx={{ color: 'primary.main', pb: '1rem' }}>
                     <AiOutlineAim />
                 </IconButton>
                 <TextField
