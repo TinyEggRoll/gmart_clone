@@ -139,6 +139,7 @@ const Index = () => {
                 <TopNavBar />
                 <BottomNavBar />
 
+                {/* Main Content Area */}
                 <Container sx={{ mt: '1rem' }} maxWidth="xl">
                     {/* Coupon Banner */}
                     <Box
@@ -161,13 +162,11 @@ const Index = () => {
                                 key={department.name}
                                 imgSrc={department.imgSrc}
                                 name={department.name}
-                                categories={department.categories}
                             />
                         ))}
                     </Box>
                 </Container>
             </Box>
-
             <Footer />
         </>
     );

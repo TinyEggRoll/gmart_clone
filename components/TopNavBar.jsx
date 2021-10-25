@@ -91,7 +91,6 @@ const NavBar = () => {
                         bgcolor: 'white',
                     }}
                     size="small"
-                    autoFocus
                     placeholder="Search Products"
                     InputProps={{
                         endAdornment: (

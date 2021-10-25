@@ -1,32 +1,16 @@
 import * as React from 'react';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Container,
-    Drawer,
-    IconButton,
-    InputAdornment,
-    Link as MUILink,
-    Modal,
-    Popover,
-    TextField,
-    ToggleButton,
-    ToggleButtonGroup,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import NextLink from 'next/link';
-import Image from 'next/image';
 
 const DepartmentButton = (props) => {
     const { imgSrc, name } = props;
-    const depURL = imgSrc.split('/').pop().split('.').slice(0, -1).join('.');
-
+    // Removes all apostrophes, then all ampersand symbols, then replace all empty spaces with underscores,
+    // and finally removes uppercase characters
+    const departmentURL = name.replace(/'/, '').replace(/&/g, '').replace(/ +/g, '_').toLowerCase();
     return (
         <>
             {/* Department Button Display */}
-            <NextLink href={`/department/${depURL}`} passHref>
+            <NextLink href={`/department/${departmentURL}`}>
                 <Button
                     sx={{
                         position: 'relative',
@@ -37,14 +21,14 @@ const DepartmentButton = (props) => {
                         borderRadius: '1rem',
                         overflow: 'hidden',
                         ':hover': {
-                            '& > :nth-child(1)': {
+                            '& > :nth-of-type(1)': {
                                 transform: 'scale(1.1)',
                                 filter: 'brightness(80%)',
                             },
                             '& .MuiTypography-root': {
                                 color: 'primary.main',
                             },
-                            '& > :nth-child(2)': {
+                            '& > :nth-of-type(2)': {
                                 height: '6.625rem',
                             },
                         },
@@ -75,6 +59,7 @@ const DepartmentButton = (props) => {
                             transition: '.3s',
                             textTransform: 'none',
                         }}>
+                        {/* Department Name */}
                         <Typography sx={{ color: 'text.main' }} variant="h6">
                             {name}
                         </Typography>

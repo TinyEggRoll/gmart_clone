@@ -1,37 +1,24 @@
 import * as React from 'react';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Chip,
-    Container,
-    Drawer,
-    IconButton,
-    InputAdornment,
-    Link as MUILink,
-    Modal,
-    Popover,
-    TextField,
-    ToggleButton,
-    ToggleButtonGroup,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import { Chip } from '@mui/material';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 const FilterButton = (props) => {
     const { filterName } = props;
     const router = useRouter();
-
+    // Removes ampersand symbol, then any white space for underscores, and finally changes to all lower case
+    const departmentURL = filterName.replace(/&/g, '').replace(/ +/g, '_').toLowerCase();
     return (
         <>
-            {filterName === 'All' ? (
-                <NextLink href={`/department/${filterName}`}>
+            <NextLink
+                // Removes & symbols, removes white space with underscores, and removes uppercase letters
+                href={`/department/${router.query.department}/category/${departmentURL}`}>
+                {/* Checks if the chip name matches the end URL, if true, then make the chip highlighted */}
+                {departmentURL === router.query.category ? (
                     <Chip
                         sx={{
                             mr: '1rem',
+                            mb: '1rem',
                             borderRadius: '.625rem',
                             p: '1rem .3125rem',
                             color: 'textWhite.main',
@@ -42,28 +29,26 @@ const FilterButton = (props) => {
                             },
                         }}
                         label={filterName}
-                        href="#"
                         clickable
                     />
-                </NextLink>
-            ) : (
-                <NextLink href={`/category/${filterName}`}>
+                ) : (
                     <Chip
                         sx={{
                             mr: '1rem',
+                            mb: '1rem',
                             borderRadius: '.625rem',
                             p: '1rem .3125rem',
-                            ':hover': {
+                            '&.MuiChip-clickable:hover': {
                                 color: 'textWhite.main',
                                 bgcolor: 'primary.main',
                             },
                         }}
                         label={filterName}
-                        href="#"
                         clickable
+                        variant="outlined"
                     />
-                </NextLink>
-            )}
+                )}
+            </NextLink>
         </>
     );
 };

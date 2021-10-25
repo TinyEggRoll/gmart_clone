@@ -2,11 +2,14 @@ import * as React from 'react';
 import { Box, Link as MUILink } from '@mui/material';
 import NextLink from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const DepartmentSection = (props) => {
     const { iconSrc, name } = props;
-
-    const depURL = iconSrc.split('/').pop().split('.').slice(0, -1).join('.');
+    const router = useRouter();
+    // Removes all ampersand symbols, then replace all empty spaces with underscores,
+    // and finally removes uppercase characters
+    const departmentURL = name.replace(/&/g, '').replace(/ +/g, '_').toLowerCase();
     return (
         <>
             <Box
@@ -37,15 +40,27 @@ const DepartmentSection = (props) => {
                     },
                 }}>
                 <Image src={iconSrc} width={30} height={30} alt="logo" />
-                <NextLink href={`/department/${depURL}`} passHref>
-                    <MUILink
-                        sx={{
-                            ml: '1rem',
-                            color: 'text.main',
-                            position: 'relative',
-                        }}>
-                        {name}
-                    </MUILink>
+                <NextLink href={`/department/${departmentURL}`} passHref>
+                    {/* Checks if the department matches the end URL, if true, then make the department link highlighted */}
+                    {departmentURL === router.query.department ? (
+                        <MUILink
+                            sx={{
+                                ml: '1rem',
+                                color: 'primary.main',
+                                position: 'relative',
+                            }}>
+                            {name}
+                        </MUILink>
+                    ) : (
+                        <MUILink
+                            sx={{
+                                ml: '1rem',
+                                color: 'text.main',
+                                position: 'relative',
+                            }}>
+                            {name}
+                        </MUILink>
+                    )}
                 </NextLink>
             </Box>
         </>

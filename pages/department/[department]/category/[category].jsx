@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Box, Chip, Container, Typography } from '@mui/material';
+import { Box, Button, Chip, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import TopNavBar from '../../components/TopNavBar';
-import BottomNavBar from '../../components/BottomNavBar';
-import DepartmentSection from '../../components/DepartmentSection';
-import FilterButton from '../../components/FilterButton';
-import Footer from '../../components/Footer';
+import { FiSliders } from 'react-icons/fi';
+import TopNavBar from '../../../../components/TopNavBar';
+import BottomNavBar from '../../../../components/BottomNavBar';
+import DepartmentSection from '../../../../components/DepartmentSection';
+import FilterButton from '../../../../components/FilterButton';
+import Footer from '../../../../components/Footer';
 
-const Department = () => {
+const Category = () => {
     const router = useRouter();
     const arrayOfDepartments = [
         {
@@ -287,12 +288,13 @@ const Department = () => {
                         </Box>
                     </Box>
 
-                    {/* Right Side of Main Screen | Categories | List of Items */}
+                    {/* Right Side of Main Screen | Categories | Sort & Filter | List of Items */}
                     <Box sx={{ width: '80%' }}>
                         <Box
                             sx={{
                                 display: 'flex',
-                                flexWrap: 'wrap',
+                                borderBottom: 'solid 1px rgba(196, 196, 196, 0.5) ',
+                                pb: '2rem',
                             }}>
                             {router.query.department !== 'today_deals' && (
                                 <>
@@ -301,16 +303,15 @@ const Department = () => {
                                             sx={{
                                                 mr: '1rem',
                                                 borderRadius: '.625rem',
-                                                color: 'textWhite.main',
-                                                bgcolor: 'primary.main',
                                                 p: '1rem .3125rem',
-                                                ':hover': {
+                                                '&.MuiChip-clickable:hover': {
                                                     color: 'textWhite.main',
                                                     bgcolor: 'primary.main',
                                                 },
                                             }}
                                             label="All"
                                             clickable
+                                            variant="outlined"
                                         />
                                     </NextLink>
                                     {temp[0].categories.map((category) => (
@@ -318,6 +319,24 @@ const Department = () => {
                                     ))}
                                 </>
                             )}
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                                p: '1.7rem',
+                                pr: '0rem',
+                            }}>
+                            <Button
+                                sx={{
+                                    '.MuiButton-endIcon': {
+                                        ml: '1.5rem',
+                                    },
+                                }}
+                                variant="string"
+                                endIcon={<FiSliders sx={{ ml: '1rem' }} />}>
+                                Sort And Filter
+                            </Button>
                         </Box>
                     </Box>
                 </Container>
@@ -328,4 +347,4 @@ const Department = () => {
     );
 };
 
-export default Department;
+export default Category;
