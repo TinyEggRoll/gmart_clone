@@ -135,7 +135,7 @@ const Index = () => {
 
     return (
         <>
-            <Box sx={{ mt: '5rem', bgcolor: 'backGround.main', height: '100rem' }}>
+            <Box sx={{ mt: '5rem', bgcolor: 'backGround.main' }}>
                 <TopNavBar />
                 <BottomNavBar />
 

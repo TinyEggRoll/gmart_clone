@@ -228,7 +228,7 @@ const Department = () => {
 
     let temp;
 
-    if (router.query.department !== 'today_deals') {
+    if (router.query.department !== 'todays_deals') {
         temp = arrayOfDepartments.filter((obj) => {
             return (
                 obj.name.replace(/&/g, '').replace(/ +/g, '_').toLowerCase() ===
@@ -294,7 +294,7 @@ const Department = () => {
                                 display: 'flex',
                                 flexWrap: 'wrap',
                             }}>
-                            {router.query.department !== 'today_deals' && (
+                            {router.query.department !== 'todays_deals' && (
                                 <>
                                     <NextLink href={`/department/${router.query.department}`}>
                                         <Chip

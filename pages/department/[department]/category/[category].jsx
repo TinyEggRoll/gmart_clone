@@ -8,6 +8,7 @@ import BottomNavBar from '../../../../components/BottomNavBar';
 import DepartmentSection from '../../../../components/DepartmentSection';
 import FilterButton from '../../../../components/FilterButton';
 import Footer from '../../../../components/Footer';
+import SingleProduct from '../../../../components/SingleProduct';
 
 const Category = () => {
     const router = useRouter();
@@ -320,6 +321,7 @@ const Category = () => {
                                 </>
                             )}
                         </Box>
+                        {/* Sort And Filter Bar */}
                         <Box
                             sx={{
                                 display: 'flex',
@@ -337,6 +339,14 @@ const Category = () => {
                                 endIcon={<FiSliders sx={{ ml: '1rem' }} />}>
                                 Sort And Filter
                             </Button>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                            <SingleProduct />
+                            <SingleProduct />
+                            <SingleProduct />
+                            <SingleProduct />
+                            <SingleProduct />
+                            <SingleProduct />
                         </Box>
                     </Box>
                 </Container>
