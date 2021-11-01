@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
+import { Provider } from 'react-redux';
 import '../styles/globals.css';
 import theme from '../styles/theme';
+import store from '../redux/store/index';
 
 export default function MyApp({ Component, pageProps }) {
     return (
@@ -11,7 +13,9 @@ export default function MyApp({ Component, pageProps }) {
                 <title>My page</title>
             </Head>
             <ThemeProvider theme={theme}>
-                <Component {...pageProps} />
+                <Provider store={store}>
+                    <Component {...pageProps} />
+                </Provider>
             </ThemeProvider>
         </>
     );

@@ -19,6 +19,7 @@ import NextLink from 'next/link';
 import Image from 'next/image';
 import { FaSearch, FaUserCircle } from 'react-icons/fa';
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai';
+import CartSingleProduct from './CartSingleProduct';
 
 const NavBar = () => {
     const [salutations, setSalutations] = React.useState('mrs');
@@ -27,6 +28,13 @@ const NavBar = () => {
     const [signUpModal, setSignUpModal] = React.useState(false);
     const [signInModal, setSignInModal] = React.useState(false);
     const [forgotPasswordModal, setForgotPasswordModal] = React.useState(false);
+
+    const [orderMethod, setOrderMethod] = React.useState('pickup');
+    const handleOrderMethod = (event, newMethod) => {
+        if (newMethod !== null) {
+            setOrderMethod(newMethod);
+        }
+    };
 
     const handleClick = (event) => {
         setAccountPopoverAnchor(event.currentTarget);
@@ -666,7 +674,9 @@ const NavBar = () => {
                         }}
                         open={accountPopover}
                         anchor="right">
+                        {/* Shopping Cart Side Drawer */}
                         <Box>
+                            {/* Top Cart Heading */}
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -691,8 +701,8 @@ const NavBar = () => {
                                     <AiOutlineClose />
                                 </IconButton>
                             </Box>
-
-                            <Box
+                            {/* Main Cart Content Area */}
+                            {/* <Box
                                 sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -722,6 +732,117 @@ const NavBar = () => {
                                         sx={{ mt: '1.5rem', color: 'white' }}>
                                         Start shopping
                                     </Button>
+                                </Box>
+                            </Box> */}
+
+                            {/* Entire Area Under Your Cart */}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    height: '100vh',
+                                    maxHeight: 'calc(100vh - 80px)',
+                                }}>
+                                <Box
+                                    sx={{
+                                        overflowY: 'auto',
+                                    }}>
+                                    {/* Gmart Banner */}
+                                    <Box
+                                        sx={{
+                                            bgcolor: '#8d9091',
+                                            p: '.625rem 1rem',
+                                            color: 'textWhite.main',
+                                        }}>
+                                        <NextLink passHref href="/">
+                                            <MUILink
+                                                sx={{
+                                                    ':hover': {
+                                                        color: 'primary.main',
+                                                    },
+                                                }}
+                                                color="textWhite.main">
+                                                Super Global Mart Charlotte
+                                            </MUILink>
+                                        </NextLink>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                            }}>
+                                            <Typography variant="caption">5 ITEMS</Typography>
+                                            <Typography>$34.95</Typography>
+                                        </Box>
+                                    </Box>
+                                    {/* Actual List of Products */}
+                                    <Box>
+                                        <CartSingleProduct />
+                                        <CartSingleProduct />
+                                        <CartSingleProduct />
+                                        <CartSingleProduct />
+                                        <CartSingleProduct />
+                                        <CartSingleProduct />
+                                        <CartSingleProduct />
+                                    </Box>
+                                </Box>
+                                {/* Bottom | Checkout  */}
+                                <Box
+                                    sx={{
+                                        p: '.625rem 1rem',
+                                        borderTop: 'solid 1px #dadada',
+                                    }}>
+                                    {/* Checkout Amount Container */}
+                                    <Box>
+                                        <Box
+                                            sx={{
+                                                width: '100%',
+                                                textAlign: 'center',
+                                                my: '.625rem',
+                                            }}>
+                                            <Typography variant="h7">CHECKOUT $48.89</Typography>
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                mb: '1rem',
+                                            }}>
+                                            <Typography variant="caption" color="gray">
+                                                Taxes
+                                            </Typography>
+                                            <Typography variant="caption">$0.96</Typography>
+                                        </Box>
+                                    </Box>
+                                    {/* Delivery or Pickup Buttons Container */}
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <Button
+                                            sx={{
+                                                width: '45%',
+                                                color: 'textWhite.main',
+                                                bgcolor: 'primary.main',
+                                                ':hover': {
+                                                    bgcolor: 'primary.main',
+                                                },
+                                            }}
+                                            variant="outlined">
+                                            Delivery
+                                        </Button>
+                                        <Button
+                                            sx={{
+                                                width: '45%',
+                                                bgcolor: 'textWhite.main',
+                                                color: 'primary.main',
+                                                ':hover': {
+                                                    bgcolor: 'primary.main',
+                                                    color: 'textWhite.main',
+                                                },
+                                            }}
+                                            variant="outlined">
+                                            Pickup / Curbside Pickup
+                                        </Button>
+                                    </Box>
                                 </Box>
                             </Box>
                         </Box>

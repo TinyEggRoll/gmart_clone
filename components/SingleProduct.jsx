@@ -4,8 +4,17 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Box, IconButton } from '@mui/system';
 import { FaSearchPlus } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { counterActions } from '../redux/reducers/counter';
 
 const SingleProduct = () => {
+    const dispatch = useDispatch();
+    const count = useSelector((state) => state.counter.counter);
+    const addProductToCartHandler = () => {
+        dispatch(counterActions.increment());
+    };
+
+    console.log(count);
     return (
         <>
             <Button
@@ -106,7 +115,8 @@ const SingleProduct = () => {
                                     ':hover': {
                                         bgcolor: 'primary.dark',
                                     },
-                                }}>
+                                }}
+                                onClick={addProductToCartHandler}>
                                 Add to cart
                             </Button>
                         </Box>

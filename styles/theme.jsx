@@ -29,6 +29,7 @@ const theme = createTheme({
                     '&:hover': {
                         backgroundColor: '',
                     },
+                    textTransform: 'none',
                 },
             },
         },
