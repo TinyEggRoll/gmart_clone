@@ -1,21 +1,5 @@
 import * as React from 'react';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Container,
-    Drawer,
-    IconButton,
-    InputAdornment,
-    Link as MUILink,
-    Modal,
-    Popover,
-    TextField,
-    ToggleButton,
-    ToggleButtonGroup,
-    InputUnstyled,
-    Typography,
-} from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import Image from 'next/image';
 import { FaRegTimesCircle, FaMinus, FaPlus } from 'react-icons/fa';
 
@@ -59,7 +43,16 @@ const CartSingleProduct = () => {
                             }}>
                             <FaMinus style={{ height: '1.0625rem', width: '1.0625rem' }} />
                         </IconButton>
-                        <Typography>1</Typography>
+                        <Box
+                            sx={{
+                                mx: '.25rem',
+                                width: '2.5rem',
+                                boxShadow: '0 1px 5px rgb(0 0 0 / 20%)',
+                                borderRadius: '.25rem',
+                                bgcolor: 'backGround.main',
+                            }}>
+                            <Typography align="center">111</Typography>
+                        </Box>
                         <IconButton
                             sx={{
                                 p: '.25rem',
