@@ -4,17 +4,28 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Box, IconButton } from '@mui/system';
 import { FaSearchPlus } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
-import { counterActions } from '../redux/reducers/counter';
+import { useSelector, useDispatch } from 'react-redux';
+import { cartActions } from '../redux/reducers/cart';
 
-const SingleProduct = () => {
+const SingleProduct = (props) => {
+    const { productID, pic, price, title, unit } = props;
+
     const dispatch = useDispatch();
-    const count = useSelector((state) => state.counter.counter);
-    const addProductToCartHandler = () => {
-        dispatch(counterActions.increment());
-    };
+    const { cartList } = useSelector((state) => state.cart);
 
-    console.log(count);
+    const addToCartHandler = () => {
+        dispatch(
+            cartActions.addItem({
+                productID,
+                pic,
+                price,
+                title,
+                unit,
+                quantity: 1,
+            })
+        );
+        console.log(cartList);
+    };
     return (
         <>
             <Button
@@ -43,7 +54,7 @@ const SingleProduct = () => {
                 {/* Top Picture */}
                 <Box
                     sx={{
-                        backgroundImage: `url(/images/products/neoguri.jpg)`,
+                        backgroundImage: `${pic}`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         width: '200px',
@@ -116,7 +127,7 @@ const SingleProduct = () => {
                                         bgcolor: 'primary.dark',
                                     },
                                 }}
-                                onClick={addProductToCartHandler}>
+                                onClick={addToCartHandler}>
                                 Add to cart
                             </Button>
                         </Box>
@@ -128,15 +139,15 @@ const SingleProduct = () => {
                     sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography gutterBottom variant="h6">
-                            $6.99
+                            {price}
                         </Typography>
                         <Typography variant="caption">/ each</Typography>
                     </Box>
                     <Typography gutterBottom variant="body2">
-                        Indomie Mi Goreng Fried Noodle Case
+                        {title}
                     </Typography>
                     <Typography variant="caption" color="#505050">
-                        5 x 3.59 oz
+                        {unit}
                     </Typography>
                 </Box>
             </Button>

@@ -19,7 +19,8 @@ import NextLink from 'next/link';
 import Image from 'next/image';
 import { FaSearch, FaUserCircle } from 'react-icons/fa';
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai';
-import CartSingleProduct from './CartSingleProduct';
+import { useSelector } from 'react-redux';
+import SingleProductCart from './SingleProductCart';
 
 const NavBar = () => {
     const [salutations, setSalutations] = React.useState('mrs');
@@ -28,13 +29,7 @@ const NavBar = () => {
     const [signUpModal, setSignUpModal] = React.useState(false);
     const [signInModal, setSignInModal] = React.useState(false);
     const [forgotPasswordModal, setForgotPasswordModal] = React.useState(false);
-
-    const [orderMethod, setOrderMethod] = React.useState('pickup');
-    const handleOrderMethod = (event, newMethod) => {
-        if (newMethod !== null) {
-            setOrderMethod(newMethod);
-        }
-    };
+    const { cartQuantity, cartList, cartPrice, cartTax } = useSelector((state) => state.cart);
 
     const handleClick = (event) => {
         setAccountPopoverAnchor(event.currentTarget);
@@ -772,19 +767,25 @@ const NavBar = () => {
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center',
                                             }}>
-                                            <Typography variant="caption">5 ITEMS</Typography>
-                                            <Typography>$34.95</Typography>
+                                            <Typography variant="caption">
+                                                {cartQuantity} ITEMS
+                                            </Typography>
+                                            <Typography>{cartPrice}</Typography>
                                         </Box>
                                     </Box>
                                     {/* Actual List of Products */}
                                     <Box>
-                                        <CartSingleProduct />
-                                        <CartSingleProduct />
-                                        <CartSingleProduct />
-                                        <CartSingleProduct />
-                                        <CartSingleProduct />
-                                        <CartSingleProduct />
-                                        <CartSingleProduct />
+                                        {cartList.map((product) => (
+                                            <SingleProductCart
+                                                productID={product.productID}
+                                                key={product.productID}
+                                                pic={product.pic}
+                                                price={product.price}
+                                                title={product.title}
+                                                unit={product.unit}
+                                                quantity={product.quantity}
+                                            />
+                                        ))}
                                     </Box>
                                 </Box>
                                 {/* Bottom | Checkout  */}
@@ -801,7 +802,13 @@ const NavBar = () => {
                                                 textAlign: 'center',
                                                 my: '.625rem',
                                             }}>
-                                            <Typography variant="h7">CHECKOUT $48.89</Typography>
+                                            <Typography
+                                                sx={{
+                                                    fontWeight: '500',
+                                                }}
+                                                variant="h7">
+                                                CHECKOUT ${cartPrice + cartTax}
+                                            </Typography>
                                         </Box>
                                         <Box
                                             sx={{
@@ -812,7 +819,7 @@ const NavBar = () => {
                                             <Typography variant="caption" color="gray">
                                                 Taxes
                                             </Typography>
-                                            <Typography variant="caption">$0.96</Typography>
+                                            <Typography variant="caption">${cartTax}</Typography>
                                         </Box>
                                     </Box>
                                     {/* Delivery or Pickup Buttons Container */}

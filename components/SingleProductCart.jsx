@@ -1,9 +1,24 @@
 import * as React from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
-import Image from 'next/image';
 import { FaRegTimesCircle, FaMinus, FaPlus } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../redux/reducers/cart';
 
-const CartSingleProduct = () => {
+const SingleProductCart = (props) => {
+    const dispatch = useDispatch();
+    const { productID, pic, price, title, unit, quantity } = props;
+
+    const removeItemHandler = () => {
+        dispatch(cartActions.removeItem(productID));
+    };
+
+    const minusItemHandler = () => {
+        dispatch(cartActions.minusItem(productID));
+    };
+
+    const plusItemHandler = () => {
+        dispatch(cartActions.plusItem(productID));
+    };
     return (
         <>
             <Box
@@ -21,13 +36,21 @@ const CartSingleProduct = () => {
                 }}>
                 {/* Image + Description */}
                 <Box sx={{ display: 'flex' }}>
-                    <Image src="/images/products/neoguri.jpg" width={60} height={60} />
+                    <Box
+                        sx={{
+                            backgroundImage: `${pic}`,
+                            width: '60px',
+                            height: '60px',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                        }}
+                    />
                     <Box sx={{ ml: '.3125rem', maxWidth: '11.25rem' }}>
                         <Typography noWrap gutterBottom>
-                            Nongshim Shin Ramyum Multi Nongshim Shin Ramyum Multis
+                            {title}
                         </Typography>
                         <Typography variant="caption" color="#505050">
-                            5 x 3.59 oz
+                            {unit}
                         </Typography>
                     </Box>
                 </Box>
@@ -40,7 +63,8 @@ const CartSingleProduct = () => {
                                 ':hover': {
                                     color: 'primary.main',
                                 },
-                            }}>
+                            }}
+                            onClick={minusItemHandler}>
                             <FaMinus style={{ height: '1.0625rem', width: '1.0625rem' }} />
                         </IconButton>
                         <Box
@@ -51,7 +75,7 @@ const CartSingleProduct = () => {
                                 borderRadius: '.25rem',
                                 bgcolor: 'backGround.main',
                             }}>
-                            <Typography align="center">111</Typography>
+                            <Typography align="center">{quantity}</Typography>
                         </Box>
                         <IconButton
                             sx={{
@@ -59,7 +83,8 @@ const CartSingleProduct = () => {
                                 ':hover': {
                                     color: 'primary.main',
                                 },
-                            }}>
+                            }}
+                            onClick={plusItemHandler}>
                             <FaPlus style={{ height: '1.0625rem', width: '1.0625rem' }} />
                         </IconButton>
                     </Box>
@@ -67,7 +92,7 @@ const CartSingleProduct = () => {
                         sx={{
                             textAlign: 'right',
                         }}>
-                        $5.99
+                        {price}
                     </Typography>
                 </Box>
 
@@ -79,7 +104,7 @@ const CartSingleProduct = () => {
                         top: '.3125rem',
                         opacity: '0',
                     }}>
-                    <IconButton sx={{ p: '0rem' }}>
+                    <IconButton sx={{ p: '0rem' }} onClick={removeItemHandler}>
                         <FaRegTimesCircle fontSize="1.25rem" />
                     </IconButton>
                 </Box>
@@ -88,4 +113,4 @@ const CartSingleProduct = () => {
     );
 };
 
-export default CartSingleProduct;
+export default SingleProductCart;

@@ -341,12 +341,14 @@ const Category = () => {
                             </Button>
                         </Box>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            <SingleProduct />
-                            <SingleProduct />
-                            <SingleProduct />
-                            <SingleProduct />
-                            <SingleProduct />
-                            <SingleProduct />
+                            <SingleProduct
+                                productID={100001}
+                                pic="url(/images/products/neoguri.jpg)"
+                                price={6.99}
+                                title="Indomie Mi Goreng Fried Noodle Case"
+                                unit="5 x 3.59 oz"
+                                quantity={1}
+                            />
                         </Box>
                     </Box>
                 </Container>
