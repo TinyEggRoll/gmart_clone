@@ -13,11 +13,12 @@ import {
     TextField,
     ToggleButton,
     ToggleButtonGroup,
+    Tooltip,
     Typography,
 } from '@mui/material';
 import NextLink from 'next/link';
 import Image from 'next/image';
-import { FaSearch, FaUserCircle } from 'react-icons/fa';
+import { FaSearch, FaUserCircle, FaInfoCircle } from 'react-icons/fa';
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import SingleProductCart from './SingleProductCart';
@@ -29,7 +30,8 @@ const NavBar = () => {
     const [signUpModal, setSignUpModal] = React.useState(false);
     const [signInModal, setSignInModal] = React.useState(false);
     const [forgotPasswordModal, setForgotPasswordModal] = React.useState(false);
-    const { cartQuantity, cartList, cartPrice, cartTax } = useSelector((state) => state.cart);
+
+    const { cartList, cartQuantity, cartPrice, cartTax } = useSelector((state) => state.cart);
 
     const handleClick = (event) => {
         setAccountPopoverAnchor(event.currentTarget);
@@ -651,14 +653,16 @@ const NavBar = () => {
                             color: 'primary.main',
                             bgcolor: 'white',
                             textTransform: 'none',
+                            paddingX: '.3125rem',
+                            width: '5rem',
                             '&:hover': {
                                 bgcolor: 'white',
                             },
                         }}
                         variant="contained"
                         onClick={() => setAccountPopover(true)}
-                        startIcon={<AiOutlineShoppingCart />}>
-                        Cart
+                        startIcon={<AiOutlineShoppingCart style={{ fontSize: '1.7rem' }} />}>
+                        {cartQuantity > 0 ? cartQuantity : 'Cart'}
                     </Button>
                     <Drawer
                         sx={{
@@ -697,161 +701,248 @@ const NavBar = () => {
                                 </IconButton>
                             </Box>
                             {/* Main Cart Content Area */}
-                            {/* <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    height: '50vh',
-                                    mt: '5rem',
-                                    p: '10vh 1.25rem',
-                                }}>
-                                <Image
-                                    src="/images/groceries.svg"
-                                    width={150}
-                                    height={292}
-                                    alt="groceries"
-                                />
+                            {cartPrice === 0 ? (
                                 <Box
                                     sx={{
                                         display: 'flex',
                                         flexDirection: 'column',
                                         justifyContent: 'center',
-                                        alignItems: 'center',
+                                        height: '50vh',
                                         mt: '5rem',
+                                        p: '10vh 1.25rem',
                                     }}>
-                                    <Typography variant="h5">Your cart is empty</Typography>
-                                    <Button
-                                        variant="contained"
-                                        fullWidth
-                                        sx={{ mt: '1.5rem', color: 'white' }}>
-                                        Start shopping
-                                    </Button>
-                                </Box>
-                            </Box> */}
-
-                            {/* Entire Area Under Your Cart */}
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                    height: '100vh',
-                                    maxHeight: 'calc(100vh - 80px)',
-                                }}>
-                                <Box
-                                    sx={{
-                                        overflowY: 'auto',
-                                    }}>
-                                    {/* Gmart Banner */}
+                                    <Image
+                                        src="/images/groceries.svg"
+                                        width={150}
+                                        height={292}
+                                        alt="groceries"
+                                    />
                                     <Box
                                         sx={{
-                                            bgcolor: '#8d9091',
-                                            p: '.625rem 1rem',
-                                            color: 'textWhite.main',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            mt: '5rem',
                                         }}>
-                                        <NextLink passHref href="/">
-                                            <MUILink
-                                                sx={{
-                                                    ':hover': {
-                                                        color: 'primary.main',
-                                                    },
-                                                }}
-                                                color="textWhite.main">
-                                                Super Global Mart Charlotte
-                                            </MUILink>
-                                        </NextLink>
-                                        <Box
-                                            sx={{
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
-                                            }}>
-                                            <Typography variant="caption">
-                                                {cartQuantity} ITEMS
-                                            </Typography>
-                                            <Typography>{cartPrice}</Typography>
-                                        </Box>
-                                    </Box>
-                                    {/* Actual List of Products */}
-                                    <Box>
-                                        {cartList.map((product) => (
-                                            <SingleProductCart
-                                                productID={product.productID}
-                                                key={product.productID}
-                                                pic={product.pic}
-                                                price={product.price}
-                                                title={product.title}
-                                                unit={product.unit}
-                                                quantity={product.quantity}
-                                            />
-                                        ))}
+                                        <Typography variant="h5">Your cart is empty</Typography>
+                                        <Button
+                                            variant="contained"
+                                            fullWidth
+                                            sx={{ mt: '1.5rem', color: 'white' }}>
+                                            Start shopping
+                                        </Button>
                                     </Box>
                                 </Box>
-                                {/* Bottom | Checkout  */}
+                            ) : (
+                                // Entire Area Under Your Cart
                                 <Box
                                     sx={{
-                                        p: '.625rem 1rem',
-                                        borderTop: 'solid 1px #dadada',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'space-between',
+                                        height: '100vh',
+                                        maxHeight: 'calc(100vh - 80px)',
                                     }}>
-                                    {/* Checkout Amount Container */}
-                                    <Box>
+                                    <Box
+                                        sx={{
+                                            overflowY: 'auto',
+                                        }}>
+                                        {/* Gmart Banner */}
                                         <Box
                                             sx={{
-                                                width: '100%',
-                                                textAlign: 'center',
-                                                my: '.625rem',
+                                                bgcolor: '#8d9091',
+                                                p: '.625rem 1rem',
+                                                color: 'textWhite.main',
                                             }}>
-                                            <Typography
+                                            <NextLink passHref href="/">
+                                                <MUILink
+                                                    sx={{
+                                                        ':hover': {
+                                                            color: 'primary.main',
+                                                        },
+                                                    }}
+                                                    color="textWhite.main">
+                                                    Super Global Mart Charlotte
+                                                </MUILink>
+                                            </NextLink>
+                                            <Box
                                                 sx={{
-                                                    fontWeight: '500',
-                                                }}
-                                                variant="h7">
-                                                CHECKOUT ${cartPrice + cartTax}
-                                            </Typography>
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                }}>
+                                                {cartPrice > 20 ? (
+                                                    <Typography variant="caption">
+                                                        {cartQuantity} ITEMS
+                                                    </Typography>
+                                                ) : (
+                                                    <Typography
+                                                        sx={{
+                                                            textTransform: 'uppercase',
+                                                            fontSize: '.6rem',
+                                                        }}
+                                                        variant="caption">
+                                                        Minimum order total is $20.00
+                                                    </Typography>
+                                                )}
+
+                                                <Typography>${cartPrice}</Typography>
+                                            </Box>
                                         </Box>
+                                        {/* Actual List of Products */}
+                                        <Box>
+                                            {cartList.map((product) => (
+                                                <SingleProductCart
+                                                    productID={product.productID}
+                                                    key={product.productID}
+                                                    pic={product.pic}
+                                                    price={product.price}
+                                                    title={product.title}
+                                                    unit={product.unit}
+                                                    quantity={product.quantity}
+                                                    totalPrice={product.totalPrice}
+                                                />
+                                            ))}
+                                        </Box>
+                                    </Box>
+                                    {/* Bottom | Checkout  */}
+                                    <Box
+                                        sx={{
+                                            p: '.625rem 1rem',
+                                            borderTop: 'solid 1px #dadada',
+                                        }}>
+                                        {cartPrice < 20 && (
+                                            <Box
+                                                sx={{
+                                                    position: 'absolute',
+                                                    bottom: 'calc(155px + 2px)',
+                                                    left: '0rem',
+                                                    width: 'calc(400px - 20px)',
+                                                    height: '1.25rem',
+                                                    p: '.625rem',
+                                                    bgcolor: '#ffddcf',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                }}>
+                                                <Typography variant="body2">
+                                                    Order minimum: $20.00
+                                                </Typography>
+                                                <Tooltip
+                                                    sx={{ pb: '1rem' }}
+                                                    title="The minimum order total (before taxes and fees) is $20.00. Please add more products to cart.">
+                                                    <IconButton
+                                                        sx={{
+                                                            verticalAlign: 'center',
+                                                            ml: '1rem',
+                                                        }}
+                                                        size="small">
+                                                        <FaInfoCircle />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Box>
+                                        )}
+                                        {/* Checkout Amount Container */}
+                                        <Box>
+                                            <Box
+                                                sx={{
+                                                    width: '100%',
+                                                    textAlign: 'center',
+                                                    my: '.625rem',
+                                                }}>
+                                                <Typography
+                                                    sx={{
+                                                        fontWeight: '500',
+                                                    }}
+                                                    variant="h7">
+                                                    CHECKOUT $
+                                                    {Math.round(
+                                                        (cartPrice + cartTax + Number.EPSILON) * 100
+                                                    ) / 100}
+                                                </Typography>
+                                            </Box>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    mb: '1rem',
+                                                }}>
+                                                <Typography variant="caption" color="gray">
+                                                    Taxes
+                                                </Typography>
+                                                <Typography variant="caption">
+                                                    ${cartTax}
+                                                </Typography>
+                                            </Box>
+                                        </Box>
+                                        {/* Delivery or Pickup Buttons Container */}
                                         <Box
                                             sx={{
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
-                                                mb: '1rem',
                                             }}>
-                                            <Typography variant="caption" color="gray">
-                                                Taxes
-                                            </Typography>
-                                            <Typography variant="caption">${cartTax}</Typography>
+                                            {cartPrice > 20 ? (
+                                                <Button
+                                                    sx={{
+                                                        width: '45%',
+                                                        color: 'textWhite.main',
+                                                        bgcolor: 'primary.main',
+                                                        ':hover': {
+                                                            bgcolor: 'primary.main',
+                                                        },
+                                                    }}
+                                                    variant="outlined">
+                                                    Delivery
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    sx={{
+                                                        width: '45%',
+                                                        '&.Mui-disabled': {
+                                                            color: 'textWhite.main',
+                                                            bgcolor: 'primary.main',
+                                                            filter: 'grayscale(.3)',
+                                                        },
+                                                    }}
+                                                    variant="outlined"
+                                                    disabled>
+                                                    Delivery
+                                                </Button>
+                                            )}
+                                            {cartPrice > 20 ? (
+                                                <Button
+                                                    sx={{
+                                                        width: '45%',
+                                                        bgcolor: 'textWhite.main',
+                                                        color: 'primary.main',
+                                                        ':hover': {
+                                                            bgcolor: 'primary.main',
+                                                            color: 'textWhite.main',
+                                                        },
+                                                    }}
+                                                    variant="outlined">
+                                                    Pickup / Curbside Pickup
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    sx={{
+                                                        width: '45%',
+                                                        '&.Mui-disabled': {
+                                                            bgcolor: 'textWhite.main',
+                                                            color: 'primary.main',
+                                                            filter: 'grayscale(.3)',
+                                                            border: 'solid 1px #fa7000',
+                                                        },
+                                                    }}
+                                                    variant="outlined"
+                                                    disabled>
+                                                    Pickup / Curbside Pickup
+                                                </Button>
+                                            )}
                                         </Box>
                                     </Box>
-                                    {/* Delivery or Pickup Buttons Container */}
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <Button
-                                            sx={{
-                                                width: '45%',
-                                                color: 'textWhite.main',
-                                                bgcolor: 'primary.main',
-                                                ':hover': {
-                                                    bgcolor: 'primary.main',
-                                                },
-                                            }}
-                                            variant="outlined">
-                                            Delivery
-                                        </Button>
-                                        <Button
-                                            sx={{
-                                                width: '45%',
-                                                bgcolor: 'textWhite.main',
-                                                color: 'primary.main',
-                                                ':hover': {
-                                                    bgcolor: 'primary.main',
-                                                    color: 'textWhite.main',
-                                                },
-                                            }}
-                                            variant="outlined">
-                                            Pickup / Curbside Pickup
-                                        </Button>
-                                    </Box>
                                 </Box>
-                            </Box>
+                            )}
                         </Box>
                     </Drawer>
                 </Box>

@@ -241,7 +241,7 @@ const Category = () => {
 
     return (
         <>
-            <Box sx={{ mt: '5rem', bgcolor: 'backGround.main', height: '100rem' }}>
+            <Box sx={{ mt: '5rem', bgcolor: 'backGround.main', minHeight: '100vh' }}>
                 <TopNavBar />
                 <BottomNavBar />
 
@@ -342,12 +342,28 @@ const Category = () => {
                         </Box>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                             <SingleProduct
-                                productID={100001}
                                 pic="url(/images/products/neoguri.jpg)"
-                                price={6.99}
-                                title="Indomie Mi Goreng Fried Noodle Case"
-                                unit="5 x 3.59 oz"
+                                price={4.99}
+                                productID={101}
                                 quantity={1}
+                                title="Neoguri"
+                                unit="5 x 3.59 oz"
+                            />
+                            <SingleProduct
+                                pic="url(/images/products/shin.jpg)"
+                                price={5.99}
+                                productID={102}
+                                quantity={1}
+                                title="Something2"
+                                unit="5 x 3.59 oz"
+                            />
+                            <SingleProduct
+                                pic="url(/images/products/shinblack.jpg)"
+                                price={8.99}
+                                productID={103}
+                                quantity={1}
+                                title="Something3"
+                                unit="5 x 3.59 oz"
                             />
                         </Box>
                     </Box>

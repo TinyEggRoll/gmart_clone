@@ -27,7 +27,7 @@ const Footer = () => {
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                                 borderTop: 'solid .05rem gray',
-                                py: '.5rem',
+                                py: '1rem',
                             }}>
                             {/* Left Side Footer */}
                             <Box sx={{}}>

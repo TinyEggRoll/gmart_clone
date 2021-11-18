@@ -9,9 +9,7 @@ import { cartActions } from '../redux/reducers/cart';
 
 const SingleProduct = (props) => {
     const { productID, pic, price, title, unit } = props;
-
     const dispatch = useDispatch();
-    const { cartList } = useSelector((state) => state.cart);
 
     const addToCartHandler = () => {
         dispatch(
@@ -22,9 +20,9 @@ const SingleProduct = (props) => {
                 title,
                 unit,
                 quantity: 1,
+                totalPrice: price,
             })
         );
-        console.log(cartList);
     };
     return (
         <>
@@ -136,7 +134,13 @@ const SingleProduct = (props) => {
 
                 {/* Bottom Description */}
                 <Box
-                    sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '100%',
+                        alignItems: 'flex-start',
+                        mt: '1rem',
+                    }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography gutterBottom variant="h6">
                             {price}

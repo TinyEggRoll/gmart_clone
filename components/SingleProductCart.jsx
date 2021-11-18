@@ -6,18 +6,17 @@ import { cartActions } from '../redux/reducers/cart';
 
 const SingleProductCart = (props) => {
     const dispatch = useDispatch();
-    const { productID, pic, price, title, unit, quantity } = props;
-
+    const { productID, pic, price, title, unit, quantity, totalPrice } = props;
     const removeItemHandler = () => {
-        dispatch(cartActions.removeItem(productID));
+        dispatch(cartActions.removeItem({ productID, price }));
     };
 
     const minusItemHandler = () => {
-        dispatch(cartActions.minusItem(productID));
+        dispatch(cartActions.minusItem({ productID, price }));
     };
 
     const plusItemHandler = () => {
-        dispatch(cartActions.plusItem(productID));
+        dispatch(cartActions.plusItem({ productID, price }));
     };
     return (
         <>
@@ -92,7 +91,7 @@ const SingleProductCart = (props) => {
                         sx={{
                             textAlign: 'right',
                         }}>
-                        {price}
+                        ${totalPrice}
                     </Typography>
                 </Box>
 

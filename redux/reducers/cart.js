@@ -1,42 +1,62 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    cartList: [
-        {
-            pic: 'url(/images/products/neoguri.jpg)',
-            price: 6.99,
-            productID: 101,
-            quantity: 1,
-            title: 'Neoguri',
-            unit: '5 x 3.59 oz',
-            totalPrice: 6.99,
-        },
-        {
-            pic: 'url(/images/products/shinblack.jpg)',
-            price: 6.99,
-            productID: 102,
-            quantity: 1,
-            title: 'Something2',
-            unit: '5 x 3.59 oz',
-            totalPrice: 7.99,
-        },
-        {
-            pic: 'url(/images/products/migoreng.jpg)',
-            price: 6.99,
-            productID: 103,
-            quantity: 1,
-            title: 'Something3',
-            unit: '5 x 3.59 oz',
-            totalPrice: 8.99,
-        },
-    ],
-    // Missing subtotal, cart total quantity, update taxes? helper function?
-    cartPrice: 55.555,
-    cartTax: 1.0,
+    cartList: [],
+    cartPrice: 0,
+    cartTax: 0,
+    cartQuantity: 0,
 };
 
-const findProductIndex = (state, targetProductID) => {
-    return state.cartList.findIndex((val) => val.productID === targetProductID);
+const updateCartQuadChanges = (state, targetProductID, price, methodChoice) => {
+    const productIndex = state.cartList.findIndex(
+        (product) => product.productID === targetProductID
+    );
+    // If the method choice is plus item, then
+    // 1. Update cart quantity (+)
+    // 2. Update product quantity (+)
+    // 3. Update product total price (+)
+    // 4. Update cart total price (+) (this is subtotal, not including tax)
+    // 5. Finally update cart tax (+)
+
+    // If the minus remove or minus item at 1, then
+    // 1. Update cart total price (-)
+    // 2. Update cart total quantity (-)
+    // 3. Update cart tax (-)
+    // 4. Finally remove product from cart (-)
+
+    // If the method choice is minus item, then
+    // 1. Update cart quantity (-)
+    // 2. Update product quantity (-)
+    // 3. Update product total price (-)
+    // 4. Update cart total price (-) (this is subtotal, not including tax)
+    // 5. Finally update cart tax (-)
+
+    if (methodChoice === 'plus') {
+        state.cartQuantity += 1;
+        state.cartList[productIndex].quantity += 1;
+        state.cartList[productIndex].totalPrice =
+            Math.round((state.cartList[productIndex].totalPrice + price + Number.EPSILON) * 100) /
+            100;
+        state.cartPrice = Math.round((state.cartPrice + price + Number.EPSILON) * 100) / 100;
+        state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
+    } else if (methodChoice === 'remove' || state.cartList[productIndex].quantity === 1) {
+        state.cartPrice =
+            Math.round(
+                (state.cartPrice - state.cartList[productIndex].totalPrice + Number.EPSILON) * 100
+            ) / 100;
+        state.cartQuantity -= state.cartList[productIndex].quantity;
+        state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
+        state.cartList.splice(productIndex, 1);
+    } else {
+        state.cartQuantity -= 1;
+        state.cartList[productIndex].quantity -= 1;
+        state.cartList[productIndex].totalPrice =
+            Math.round((state.cartList[productIndex].totalPrice - price + Number.EPSILON) * 100) /
+            100;
+        state.cartPrice = Math.round((state.cartPrice - price + Number.EPSILON) * 100) / 100;
+        state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
+    }
 };
 
 const cartSlice = createSlice({
@@ -44,23 +64,23 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         removeItem(state, action) {
-            const productIndex = findProductIndex(current(state), action.payload);
-            state.cartList.splice(productIndex, 1);
+            const { productID, price } = action.payload;
+            updateCartQuadChanges(state, productID, price, 'remove');
         },
         minusItem(state, action) {
-            const productIndex = findProductIndex(current(state), action.payload);
-            if (state.cartList[productIndex].quantity === 1) {
-                state.cartList.splice(productIndex, 1);
-            } else {
-                state.cartList[productIndex].quantity--;
-            }
+            const { productID, price } = action.payload;
+            updateCartQuadChanges(state, productID, price, 'minus');
         },
         plusItem(state, action) {
-            const productIndex = findProductIndex(current(state), action.payload);
-            state.cartList[productIndex].quantity++;
+            const { productID, price } = action.payload;
+            updateCartQuadChanges(state, productID, price, 'plus');
         },
         addItem(state, action) {
             state.cartList.push(action.payload);
+            state.cartQuantity += 1;
+            state.cartPrice =
+                Math.round((state.cartPrice + action.payload.price + Number.EPSILON) * 100) / 100;
+            state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
         },
     },
 });
