@@ -47,6 +47,7 @@ const Category = () => {
                             mr: '1rem',
                             position: 'sticky',
                             top: '6rem',
+                            alignSelf: 'flex-start',
                         }}>
                         <Typography sx={{ fontWeight: '500', mb: '1rem' }} variant="h4">
                             Departments
@@ -75,6 +76,7 @@ const Category = () => {
                                         />
                                     );
                                 }
+                                return null;
                             })}
                         </Box>
                     </Box>

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';

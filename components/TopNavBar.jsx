@@ -106,9 +106,7 @@ const NavBar = () => {
                     }}
                 />
                 <Modal open={forgotPasswordModal} onClose={() => setForgotPasswordModal(false)}>
-                    <Box
-                        sx={style}
-                        onSubmit={() => console.log('remember to create onsubmit handler')}>
+                    <Box sx={style}>
                         {/* Top Heading */}
                         <Box
                             sx={{
@@ -204,11 +202,7 @@ const NavBar = () => {
                 </Modal>
 
                 <Modal open={signInModal} onClose={() => setSignInModal(false)}>
-                    <Box
-                        sx={style}
-                        component="form"
-                        noValidate
-                        onSubmit={() => console.log('remember to create onsubmit handler')}>
+                    <Box sx={style} component="form" noValidate>
                         {/* Top Heading */}
                         <Box
                             sx={{
@@ -333,11 +327,7 @@ const NavBar = () => {
                 </Modal>
 
                 <Modal open={signUpModal} onClose={() => setSignUpModal(false)}>
-                    <Box
-                        sx={style}
-                        component="form"
-                        noValidate
-                        onSubmit={() => console.log('remember to create onsubmit handler')}>
+                    <Box sx={style} component="form" noValidate>
                         {/* Top Heading */}
                         <Box
                             sx={{

@@ -46,6 +46,7 @@ const Department = () => {
                             maxHeight: '100%',
                             position: 'sticky',
                             top: '6rem',
+                            alignSelf: 'flex-start',
                         }}>
                         <Typography sx={{ fontWeight: '500', mb: '1rem' }} variant="h4">
                             Departments
@@ -74,6 +75,7 @@ const Department = () => {
                                         />
                                     );
                                 }
+                                return null;
                             })}
                         </Box>
                     </Box>
