@@ -1,23 +1,32 @@
 import * as React from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import { FaRegTimesCircle, FaMinus, FaPlus } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../redux/reducers/cart';
 
 const SingleProductCart = (props) => {
+    const { index } = props;
     const dispatch = useDispatch();
-    const { productID, pic, price, title, unit, quantity, totalPrice } = props;
+    const { productID, totalPrice, pic, price, title, unit, quantity } = useSelector(
+        (state) => state.cart.cartList[index]
+    );
+
     const removeItemHandler = () => {
         dispatch(cartActions.removeItem({ productID, price }));
     };
 
     const minusItemHandler = () => {
-        dispatch(cartActions.minusItem({ productID, price }));
+        if (quantity === 1) {
+            dispatch(cartActions.removeItem({ productID, price }));
+        } else {
+            dispatch(cartActions.minusItem({ productID, price }));
+        }
     };
 
     const plusItemHandler = () => {
         dispatch(cartActions.plusItem({ productID, price }));
     };
+
     return (
         <>
             <Box

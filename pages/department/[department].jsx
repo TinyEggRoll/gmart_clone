@@ -2,244 +2,30 @@ import * as React from 'react';
 import { Box, Chip, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { useSelector } from 'react-redux';
 import TopNavBar from '../../components/TopNavBar';
 import BottomNavBar from '../../components/BottomNavBar';
 import DepartmentSection from '../../components/DepartmentSection';
 import FilterButton from '../../components/FilterButton';
 import Footer from '../../components/Footer';
+import SingleProduct from '../../components/SingleProduct';
 
 const Department = () => {
     const router = useRouter();
-    const arrayOfDepartments = [
-        {
-            iconSrc: '/images/department_icons/alcohol.svg',
-            name: 'Alcohol',
-            imgSrc: '/images/department_images/alcohol.png',
-            categories: ['Sake & Soju', 'Beer', 'Wine'],
-        },
-        {
-            iconSrc: '/images/department_icons/beverage.svg',
-            name: 'Beverage',
-            imgSrc: '/images/department_images/beverage.jpeg',
-            categories: ['Soft Drink', 'Soy Milk', 'Water', 'Health Drink'],
-        },
-        {
-            iconSrc: '/images/department_icons/bread_bakery.svg',
-            name: 'Bread & Bakery',
-            imgSrc: '/images/department_images/bread_bakery.jpeg',
-            categories: [
-                'Bread',
-                'Tortilla & Tostada',
-                'Peanut Butter & Jelly',
-                'Dessert',
-                'Baking',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/canned_products.svg',
-            name: 'Canned Products',
-            imgSrc: '/images/department_images/canned_products.jpeg',
-            categories: [
-                'Coconut & Condensed Milk',
-                'Fish & Meat',
-                'Bean',
-                'Pickled',
-                'Vegetable',
-                'Fruits',
-                'Soup',
-                'Sauce',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/cooking_wine_oil_vinegar.svg',
-            name: 'Cooking Wine & Oil & Vinegar',
-            imgSrc: '/images/department_images/cooking_wine_oil_vinegar.jpg',
-            categories: ['Oil', 'Vinegar', 'Cooking Wine', 'Cooking Syrup'],
-        },
-        {
-            iconSrc: '/images/department_icons/dairy_eggs.svg',
-            name: 'Dairy & Eggs',
-            imgSrc: '/images/department_images/dairy_eggs.jpg',
-            categories: ['Milk', 'Egg', 'Cheese', 'Butter & Margarine', 'Yogurt', 'Sour Cream'],
-        },
-        {
-            iconSrc: '/images/department_icons/dried_vegetable.svg',
-            name: 'Dried Vegetables',
-            imgSrc: '/images/department_images/dried_vegetable.jpg',
-            categories: ['Vegetable', 'Health Herbs', 'Fruits'],
-        },
-        {
-            iconSrc: '/images/department_icons/frozen.svg',
-            name: 'Frozen',
-            imgSrc: '/images/department_images/frozen.jpeg',
-            categories: [
-                'Dumpling & Spring Roll',
-                'Dumpling Wrapper',
-                'Steamed Bun',
-                'Ice Cream',
-                'Mochi',
-                'Natto',
-                'Imitation Crab Meat',
-                'Fish Cake',
-                'Sausage',
-                'Fish &  Meat Ball',
-                'Noodle',
-                'Instant',
-                'Asian Vegetable & Fruits',
-                'Frozen Drinks',
-                'Indian',
-                'European',
-                'Hispanic',
-                'Vegan',
-                'Misc',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/grain.svg',
-            name: 'Grain',
-            imgSrc: '/images/department_images/grain.jpg',
-            categories: [
-                'Rice & Grain',
-                'Bulk Rice',
-                'Cooked Rice',
-                'Flour',
-                'Bean',
-                'Tapioca Pearl',
-                'Misc',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/housewares.svg',
-            name: 'Housewares',
-            imgSrc: '/images/department_images/housewares.jpeg',
-            categories: [
-                'Household Essentials',
-                'Kitchen Appliances',
-                'Cookware',
-                'Tableware',
-                'Utensils',
-                'Food Storage',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/meat_seafood.svg',
-            name: 'Meat & Seafood',
-            imgSrc: '/images/department_images/meat_seafood.png',
-            categories: [
-                'Beef',
-                'Chicken',
-                'Pork',
-                'Turkey',
-                'Goat & Lamb',
-                'Meat Misc',
-                'Frozen Seafood',
-                'Dried Seafood',
-                'Seafood Misc',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/noodle.svg',
-            name: 'Noodle',
-            imgSrc: '/images/department_images/noodle.jpg',
-            categories: ['Ramen', 'Ramen Cup', 'Dried Noodle', 'Rice Paper', 'Pasta'],
-        },
-        {
-            iconSrc: '/images/department_icons/produce.svg',
-            name: 'Produce',
-            imgSrc: '/images/department_images/produce.png',
-            categories: [
-                'Fresh Vegetable',
-                'Fresh Herbs',
-                'Fresh Fruits',
-                'Box Vegetable & Fruits',
-                'Packaged Vegetable & Fruits',
-                'Packaged Nuts & Candy',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/refrigerated.svg',
-            name: 'Refrigerated',
-            imgSrc: '/images/department_images/refrigerated.jpeg',
-            categories: [
-                'Fresh noodle',
-                'Kimchi & Side Dish',
-                'Rice Cake',
-                'Tofu',
-                'Pickled',
-                'Paste',
-                'Instant Noodle',
-                'Soup & Stew',
-                'Sausage & Meats',
-                'Misc',
-                'Juice & Beverage',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/sauce_paste.svg',
-            name: 'Sauce & Paste',
-            imgSrc: '/images/department_images/sauce_paste.jpg',
-            categories: [
-                'Soy Sauce',
-                'Paste',
-                'Fish Sauce',
-                'Dipping Sauce',
-                'Asian BBQ Sauce',
-                'Hot Sauce',
-                'Marinade Sauce',
-                'Noodle Sauce',
-                'Condiments',
-                'Hot Pot Soup Base',
-                'Sauce Misc',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/seasoning_spices.svg',
-            name: 'Seasoning & Spices',
-            imgSrc: '/images/department_images/seasoning_spices.jpg',
-            categories: [
-                'Salt & Sugar',
-                'Seasoning',
-                'Spices',
-                'Wasabi & Mustard',
-                'Curry',
-                'Soup Base',
-                'Broth',
-            ],
-        },
-        {
-            iconSrc: '/images/department_icons/seaweed.svg',
-            name: 'Seaweed',
-            imgSrc: '/images/department_images/seaweed.jpg',
-            categories: ['Seasoned Laver', 'Dried Seaweed', 'Kelp'],
-        },
-        {
-            iconSrc: '/images/department_icons/snack_candy.svg',
-            name: 'Snack & Candy',
-            imgSrc: '/images/department_images/snack_candy.jpeg',
-            categories: ['Chips', 'Cookies', 'Snack', 'Candy & Gum', 'Nuts'],
-        },
-        {
-            iconSrc: '/images/department_icons/tea_coffee_breakfast.svg',
-            name: 'Tea & Coffee & Breakfast',
-            imgSrc: '/images/department_images/tea_coffee_breakfast.jpg',
-            categories: ['Tea', 'Coffee & Mix', 'Honey', 'Cereal'],
-        },
-    ];
+    const { arrayOfDepartments, arrayOfProducts } = useSelector((state) => state.departments);
 
-    let temp;
+    // Filters each department in the array by removing ampersand symbols, replacing spaces with underscores, and removing uppercase characters
+    // Then try to match this updated department name with the URL to return the index in the array.
 
-    if (router.query.department !== 'todays_deals') {
-        temp = arrayOfDepartments.filter((obj) => {
-            return (
-                obj.name.replace(/&/g, '').replace(/ +/g, '_').toLowerCase() ===
-                router.query.department
-            );
-        });
-    }
+    const departmentIndex = arrayOfDepartments.findIndex(
+        (department) =>
+            department.name.replace(/&/g, '').replace(/ +/g, '_').toLowerCase() ===
+            router.query.department
+    );
 
     return (
         <>
-            <Box sx={{ mt: '5rem', bgcolor: 'backGround.main', height: '100rem' }}>
+            <Box sx={{ mt: '5rem', bgcolor: 'backGround.main', minHeight: '100vh' }}>
                 <TopNavBar />
                 <BottomNavBar />
 
@@ -248,7 +34,7 @@ const Department = () => {
                     sx={{
                         display: 'flex',
                         bgcolor: 'backGround.main',
-                        height: '2000px',
+                        minHeight: '100vh',
                         pt: '1.875rem',
                     }}
                     maxWidth="xl">
@@ -257,7 +43,7 @@ const Department = () => {
                         sx={{
                             width: '20%',
                             mr: '1rem',
-                            maxHeight: '100vh',
+                            maxHeight: '100%',
                             position: 'sticky',
                             top: '6rem',
                         }}>
@@ -277,13 +63,18 @@ const Department = () => {
                                     backgroundColor: '#c4c4c4',
                                 },
                             }}>
-                            {arrayOfDepartments.map((department) => (
-                                <DepartmentSection
-                                    key={department.name}
-                                    iconSrc={department.iconSrc}
-                                    name={department.name}
-                                />
-                            ))}
+                            {/* Skips the Today's Deals department in array */}
+                            {arrayOfDepartments.map((department, index) => {
+                                if (index !== 0) {
+                                    return (
+                                        <DepartmentSection
+                                            key={department.name}
+                                            iconSrc={department.iconSrc}
+                                            name={department.name}
+                                        />
+                                    );
+                                }
+                            })}
                         </Box>
                     </Box>
 
@@ -294,7 +85,16 @@ const Department = () => {
                                 display: 'flex',
                                 flexWrap: 'wrap',
                             }}>
-                            {router.query.department !== 'todays_deals' && (
+                            {/* Display this if department is today's deals */}
+                            {router.query.department === 'todays_deals' &&
+                                departmentIndex === -1 && (
+                                    <Box sx={{ m: 'auto' }}>
+                                        There Are No Sales Today. Please Visit Another Department!
+                                    </Box>
+                                )}
+
+                            {/* Display this if department is valid */}
+                            {departmentIndex !== -1 && (
                                 <>
                                     <NextLink href={`/department/${router.query.department}`}>
                                         <Chip
@@ -313,11 +113,35 @@ const Department = () => {
                                             clickable
                                         />
                                     </NextLink>
-                                    {temp[0].categories.map((category) => (
-                                        <FilterButton key={category} filterName={category} />
-                                    ))}
+                                    {arrayOfDepartments[departmentIndex].categories.map(
+                                        (category) => (
+                                            <FilterButton key={category} filterName={category} />
+                                        )
+                                    )}
                                 </>
                             )}
+
+                            {/* Display this if department is invalid */}
+                            {router.query.department !== 'todays_deals' &&
+                                departmentIndex === -1 && (
+                                    <Box sx={{ m: 'auto' }}>
+                                        This Department Does Not Exist. Please Visit Another
+                                        Department!
+                                    </Box>
+                                )}
+                        </Box>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                            {arrayOfProducts.map((product) => (
+                                <SingleProduct
+                                    key={product.productID}
+                                    pic={product.pic}
+                                    price={product.price}
+                                    productID={product.productID}
+                                    quantity={product.quantity}
+                                    title={product.title}
+                                    unit={product.unit}
+                                />
+                            ))}
                         </Box>
                     </Box>
                 </Container>

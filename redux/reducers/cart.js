@@ -12,6 +12,7 @@ const updateCartQuadChanges = (state, targetProductID, price, methodChoice) => {
     const productIndex = state.cartList.findIndex(
         (product) => product.productID === targetProductID
     );
+
     // If the method choice is plus item, then
     // 1. Update cart quantity (+)
     // 2. Update product quantity (+)
@@ -19,7 +20,7 @@ const updateCartQuadChanges = (state, targetProductID, price, methodChoice) => {
     // 4. Update cart total price (+) (this is subtotal, not including tax)
     // 5. Finally update cart tax (+)
 
-    // If the minus remove or minus item at 1, then
+    // If the method choice is remove, then
     // 1. Update cart total price (-)
     // 2. Update cart total quantity (-)
     // 3. Update cart tax (-)
@@ -32,30 +33,44 @@ const updateCartQuadChanges = (state, targetProductID, price, methodChoice) => {
     // 4. Update cart total price (-) (this is subtotal, not including tax)
     // 5. Finally update cart tax (-)
 
-    if (methodChoice === 'plus') {
-        state.cartQuantity += 1;
-        state.cartList[productIndex].quantity += 1;
-        state.cartList[productIndex].totalPrice =
-            Math.round((state.cartList[productIndex].totalPrice + price + Number.EPSILON) * 100) /
-            100;
-        state.cartPrice = Math.round((state.cartPrice + price + Number.EPSILON) * 100) / 100;
-        state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
-    } else if (methodChoice === 'remove' || state.cartList[productIndex].quantity === 1) {
-        state.cartPrice =
-            Math.round(
-                (state.cartPrice - state.cartList[productIndex].totalPrice + Number.EPSILON) * 100
-            ) / 100;
-        state.cartQuantity -= state.cartList[productIndex].quantity;
-        state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
-        state.cartList.splice(productIndex, 1);
-    } else {
-        state.cartQuantity -= 1;
-        state.cartList[productIndex].quantity -= 1;
-        state.cartList[productIndex].totalPrice =
-            Math.round((state.cartList[productIndex].totalPrice - price + Number.EPSILON) * 100) /
-            100;
-        state.cartPrice = Math.round((state.cartPrice - price + Number.EPSILON) * 100) / 100;
-        state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
+    // If the method is add item, then
+    // 1. Push product object into cartList array.
+    // 2. Update Cart quantity (+)
+    // 3. Update Cart price (+)
+    // 4. Finally update Cart tax (+)
+
+    switch (methodChoice) {
+        case 'plus':
+            state.cartQuantity += 1;
+            state.cartList[productIndex].quantity += 1;
+            state.cartList[productIndex].totalPrice =
+                Math.round(
+                    (state.cartList[productIndex].totalPrice + price + Number.EPSILON) * 100
+                ) / 100;
+            state.cartPrice = Math.round((state.cartPrice + price + Number.EPSILON) * 100) / 100;
+            state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
+            break;
+        case 'remove':
+            state.cartPrice =
+                Math.round(
+                    (state.cartPrice - state.cartList[productIndex].totalPrice + Number.EPSILON) *
+                        100
+                ) / 100;
+            state.cartQuantity -= state.cartList[productIndex].quantity;
+            state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
+            state.cartList.splice(productIndex, 1);
+            break;
+        case 'minus':
+            state.cartQuantity -= 1;
+            state.cartList[productIndex].quantity -= 1;
+            state.cartList[productIndex].totalPrice =
+                Math.round(
+                    (state.cartList[productIndex].totalPrice - price + Number.EPSILON) * 100
+                ) / 100;
+            state.cartPrice = Math.round((state.cartPrice - price + Number.EPSILON) * 100) / 100;
+            state.cartTax = Math.round((state.cartPrice * 0.02014 + Number.EPSILON) * 100) / 100;
+            break;
+        default:
     }
 };
 

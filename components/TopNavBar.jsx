@@ -792,16 +792,10 @@ const NavBar = () => {
                                         </Box>
                                         {/* Actual List of Products */}
                                         <Box>
-                                            {cartList.map((product) => (
+                                            {cartList.map((product, index) => (
                                                 <SingleProductCart
-                                                    productID={product.productID}
                                                     key={product.productID}
-                                                    pic={product.pic}
-                                                    price={product.price}
-                                                    title={product.title}
-                                                    unit={product.unit}
-                                                    quantity={product.quantity}
-                                                    totalPrice={product.totalPrice}
+                                                    index={index}
                                                 />
                                             ))}
                                         </Box>
