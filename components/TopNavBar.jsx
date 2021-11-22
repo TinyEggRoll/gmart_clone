@@ -68,6 +68,7 @@ const NavBar = () => {
                     position: 'fixed',
                     top: '0',
                     left: '0',
+                    right: '0',
                     zIndex: '1',
                     bgcolor: 'secondary.main',
                     height: '5rem',
