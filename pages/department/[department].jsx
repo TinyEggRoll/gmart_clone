@@ -1,7 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
 import { Box, Chip, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { MongoClient } from 'mongodb';
 import { useSelector } from 'react-redux';
 import TopNavBar from '../../components/TopNavBar';
 import BottomNavBar from '../../components/BottomNavBar';
@@ -10,7 +12,8 @@ import FilterButton from '../../components/FilterButton';
 import Footer from '../../components/Footer';
 import SingleProduct from '../../components/SingleProduct';
 
-const Department = () => {
+const Department = (props) => {
+    const { arrayOnSaleProducts } = props;
     const router = useRouter();
     const { arrayOfDepartments, arrayOfProducts } = useSelector((state) => state.departments);
 
@@ -87,15 +90,7 @@ const Department = () => {
                                 display: 'flex',
                                 flexWrap: 'wrap',
                             }}>
-                            {/* Display this if department is today's deals */}
-                            {router.query.department === 'todays_deals' &&
-                                departmentIndex === -1 && (
-                                    <Box sx={{ m: 'auto' }}>
-                                        There Are No Sales Today. Please Visit Another Department!
-                                    </Box>
-                                )}
-
-                            {/* Display this if department is valid */}
+                            {/* Display List of Categories If Department is Valid */}
                             {departmentIndex !== -1 && (
                                 <>
                                     <NextLink href={`/department/${router.query.department}`}>
@@ -122,28 +117,30 @@ const Department = () => {
                                     )}
                                 </>
                             )}
-
-                            {/* Display this if department is invalid */}
-                            {router.query.department !== 'todays_deals' &&
-                                departmentIndex === -1 && (
-                                    <Box sx={{ m: 'auto' }}>
-                                        This Department Does Not Exist. Please Visit Another
-                                        Department!
-                                    </Box>
-                                )}
                         </Box>
+                        {/* Displays either On Sale Products, or Respective Department Products Depending On Props */}
                         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {arrayOfProducts.map((product) => (
-                                <SingleProduct
-                                    key={product.productID}
-                                    pic={product.pic}
-                                    price={product.price}
-                                    productID={product.productID}
-                                    quantity={product.quantity}
-                                    title={product.title}
-                                    unit={product.unit}
-                                />
-                            ))}
+                            {arrayOnSaleProducts === 'no'
+                                ? arrayOfProducts.map((product) => (
+                                      <SingleProduct
+                                          key={product.productID}
+                                          pic={product.pic}
+                                          price={product.price}
+                                          productID={product.productID}
+                                          title={product.title}
+                                          unit={product.unit}
+                                      />
+                                  ))
+                                : arrayOnSaleProducts.map((product) => (
+                                      <SingleProduct
+                                          key={product.productID}
+                                          pic={product.pic}
+                                          price={product.price}
+                                          productID={product.productID}
+                                          title={product.title}
+                                          unit={product.unit}
+                                      />
+                                  ))}
                         </Box>
                     </Box>
                 </Container>
@@ -153,5 +150,55 @@ const Department = () => {
         </>
     );
 };
+// Determines What Dynamic URL is Allowed, with No Fallbacks
+export async function getStaticPaths() {
+    const uri = process.env.MONGODB_URI;
+    const client = await MongoClient.connect(uri);
+    const db = client.db();
+    const listOfDepts = db.collection('ListOfDepts');
+    const arrayOfDepts = await listOfDepts.find({}).toArray();
+    client.close();
+
+    return {
+        fallback: false,
+        paths: arrayOfDepts[0].array.map((department) => ({
+            params: { department },
+        })),
+    };
+}
+// Checks to see if URL is 'todays_deals', then hit db and return us a list of on sale products, else
+// assigns a no value to prop
+export async function getStaticProps(context) {
+    const { params } = context;
+    const uri = process.env.MONGODB_URI;
+
+    if (params.department === 'todays_deals') {
+        const client = await MongoClient.connect(uri);
+        const db = client.db();
+
+        const dailyDealsCollection = db.collection('TodayDeals');
+        const arrayOnSaleProducts = await dailyDealsCollection.find().toArray();
+        client.close();
+
+        return {
+            props: {
+                arrayOnSaleProducts: arrayOnSaleProducts.map((product) => ({
+                    pic: product.pic,
+                    price: product.price,
+                    productID: product.productID,
+                    unit: product.unit,
+                    title: product.title,
+                    id: product._id.toString(),
+                })),
+            },
+        };
+    }
+
+    return {
+        props: {
+            arrayOnSaleProducts: 'no',
+        },
+    };
+}
 
 export default Department;

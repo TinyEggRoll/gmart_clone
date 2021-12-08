@@ -10,6 +10,26 @@ const SingleProduct = (props) => {
     const { cartList } = useSelector((state) => state.cart);
     const productIndex = cartList.findIndex((product) => product.productID === productID);
 
+    const singleProductStyle = {
+        backgroundImage: `${pic}`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        width: '200px',
+        height: '200px',
+        position: 'relative',
+        ':hover': {
+            '& > :nth-of-type(1) ': {
+                opacity: '1',
+            },
+            boxShadow: 'inset 0 0 0 100px rgba(255, 255, 255, 0.7)',
+        },
+    };
+
+    // Updates backgroundImage style by inputting 'url()' if the pic prop is from https/cdn
+    if (pic.indexOf('https://') === 0) {
+        singleProductStyle.backgroundImage = `url(${pic})`;
+    }
+
     const addToCartHandler = () => {
         dispatch(
             cartActions.addItem({
@@ -60,36 +80,9 @@ const SingleProduct = (props) => {
                             },
                         },
                     },
-                    // ':hover': {
-                    //     '& :nth-of-type(2)': {
-                    //         '& :nth-of-type(1)': {
-                    //             '& .MuiTypography-h6': {
-                    //                 color: 'primary.main',
-                    //             },
-                    //         },
-                    //         '& .MuiTypography-body2': {
-                    //             color: 'primary.main',
-                    //         },
-                    //     },
-                    //     bgcolor: 'textWhite.main',
-                    // },
                 }}>
                 {/* Top Picture */}
-                <Box
-                    sx={{
-                        backgroundImage: `${pic}`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        width: '200px',
-                        height: '200px',
-                        position: 'relative',
-                        ':hover': {
-                            '& > :nth-of-type(1) ': {
-                                opacity: '1',
-                            },
-                            boxShadow: 'inset 0 0 0 100px rgba(255, 255, 255, 0.7)',
-                        },
-                    }}>
+                <Box sx={singleProductStyle}>
                     {/* Hidden */}
                     <Box
                         sx={{

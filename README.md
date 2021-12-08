@@ -14,7 +14,7 @@ A few more examples are shown in the folder 'before_after_pics'
 
 ## Demo
 
-### https://gmart-clone-2ntbxtox4-tinyeggroll.vercel.app/
+### https://gmart-clone.vercel.app/
 
 ![HomePageSingle](https://user-images.githubusercontent.com/60073154/142793430-7e7bca3a-1787-4882-a0a8-cd7922103aea.png)
 
