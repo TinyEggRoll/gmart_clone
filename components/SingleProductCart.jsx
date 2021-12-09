@@ -27,6 +27,19 @@ const SingleProductCart = (props) => {
         dispatch(cartActions.plusItem({ productID, price }));
     };
 
+    const singleCartProductStyle = {
+        backgroundImage: `${pic}`,
+        width: '60px',
+        height: '60px',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    };
+
+    // Updates backgroundImage style by inputting 'url()' if the pic prop is from https/cdn
+    if (pic.indexOf('https://') === 0) {
+        singleCartProductStyle.backgroundImage = `url(${pic})`;
+    }
+
     return (
         <>
             <Box
@@ -44,15 +57,7 @@ const SingleProductCart = (props) => {
                 }}>
                 {/* Image + Description */}
                 <Box sx={{ display: 'flex' }}>
-                    <Box
-                        sx={{
-                            backgroundImage: `${pic}`,
-                            width: '60px',
-                            height: '60px',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                        }}
-                    />
+                    <Box sx={singleCartProductStyle} />
                     <Box sx={{ ml: '.3125rem', maxWidth: '11.25rem' }}>
                         <Typography noWrap gutterBottom>
                             {title}

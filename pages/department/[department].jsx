@@ -139,6 +139,7 @@ const Department = (props) => {
                                           productID={product.productID}
                                           title={product.title}
                                           unit={product.unit}
+                                          oldPrice={product.oldPrice}
                                       />
                                   ))}
                         </Box>
@@ -179,7 +180,6 @@ export async function getStaticProps(context) {
         const dailyDealsCollection = db.collection('TodayDeals');
         const arrayOnSaleProducts = await dailyDealsCollection.find().toArray();
         client.close();
-
         return {
             props: {
                 arrayOnSaleProducts: arrayOnSaleProducts.map((product) => ({
@@ -188,6 +188,7 @@ export async function getStaticProps(context) {
                     productID: product.productID,
                     unit: product.unit,
                     title: product.title,
+                    oldPrice: product.oldPrice,
                     id: product._id.toString(),
                 })),
             },

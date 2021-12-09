@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../redux/reducers/cart';
 
 const SingleProduct = (props) => {
-    const { productID, pic, price, title, unit } = props;
+    const { productID, pic, price, title, unit, oldPrice = null } = props;
     const dispatch = useDispatch();
     const { cartList } = useSelector((state) => state.cart);
     const productIndex = cartList.findIndex((product) => product.productID === productID);
@@ -55,8 +55,7 @@ const SingleProduct = (props) => {
     const plusItemHandler = () => {
         dispatch(cartActions.plusItem({ productID, price }));
     };
-    // 213 x 321
-    // 1066
+
     return (
         <>
             <Button
@@ -74,8 +73,13 @@ const SingleProduct = (props) => {
                     transition: 'all 0.3s',
                     ':hover': {
                         bgcolor: 'textWhite.main',
-                        '& > :nth-of-type(2)': {
-                            '& .MuiTypography-root': {
+                        '& > div:nth-of-type(2)': {
+                            '& > div:nth-of-type(1)': {
+                                '& > h6:nth-of-type(1)': {
+                                    color: 'primary.main',
+                                },
+                            },
+                            '& > p:nth-of-type(1)': {
                                 color: 'primary.main',
                             },
                         },
@@ -234,11 +238,39 @@ const SingleProduct = (props) => {
                         mt: '1rem',
                     }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography gutterBottom variant="h6">
-                            {price}
+                        {oldPrice !== null && (
+                            <Box
+                                sx={{
+                                    bgcolor: '#EA4E4E',
+                                    borderRadius: '2px',
+                                    color: 'textWhite.main',
+                                    p: '.125rem .5rem',
+                                }}>
+                                <Typography sx={{ textDecoration: 'line-through' }} variant="body2">
+                                    &#36;{oldPrice}
+                                </Typography>
+                            </Box>
+                        )}
+                        <Typography sx={{ ml: '.25rem' }} variant="h6">
+                            &#36;{price}
                         </Typography>
-                        <Typography variant="caption">/ each</Typography>
+                        <Typography sx={{ mt: '.25rem' }} variant="caption">
+                            / each
+                        </Typography>
                     </Box>
+                    {oldPrice !== null && (
+                        <Typography
+                            sx={{
+                                color: '#DC1313',
+                                fontWeight: '500',
+                            }}
+                            variant="caption">
+                            Save $
+                            {(Math.round((oldPrice - price + Number.EPSILON) * 100) / 100).toFixed(
+                                2
+                            )}
+                        </Typography>
+                    )}
                     <Typography gutterBottom variant="body2">
                         {title}
                     </Typography>
