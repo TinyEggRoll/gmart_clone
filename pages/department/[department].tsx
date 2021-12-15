@@ -1,17 +1,20 @@
+/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
-import { Box, Button, Chip, Container, Typography } from '@mui/material';
+import { Box, Chip, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import { FiSliders } from 'react-icons/fi';
+import { MongoClient } from 'mongodb';
 import { useSelector } from 'react-redux';
-import TopNavBar from '../../../../components/TopNavBar';
-import BottomNavBar from '../../../../components/BottomNavBar';
-import DepartmentSection from '../../../../components/DepartmentSection';
-import FilterButton from '../../../../components/FilterButton';
-import Footer from '../../../../components/Footer';
-import SingleProduct from '../../../../components/SingleProduct';
+import { GetStaticProps } from 'next';
+import TopNavBar from '../../components/TopNavBar';
+import BottomNavBar from '../../components/BottomNavBar';
+import DepartmentSection from '../../components/DepartmentSection';
+import FilterButton from '../../components/FilterButton';
+import Footer from '../../components/Footer';
+import SingleProduct from '../../components/SingleProduct';
 
-const Category = () => {
+const Department = (props) => {
+  const { arrayOnSaleProducts } = props;
   const router = useRouter();
   const { arrayOfDepartments, arrayOfProducts } = useSelector(
     (state) => state.departments
@@ -39,7 +42,6 @@ const Category = () => {
             bgcolor: 'backGround.main',
             minHeight: '100vh',
             pt: '1.875rem',
-            position: 'relative',
           }}
           maxWidth="xl"
         >
@@ -48,6 +50,7 @@ const Category = () => {
             sx={{
               width: '20%',
               mr: '1rem',
+              maxHeight: '100%',
               position: 'sticky',
               top: '6rem',
               alignSelf: 'flex-start',
@@ -86,16 +89,15 @@ const Category = () => {
             </Box>
           </Box>
 
-          {/* Right Side of Main Screen | Categories | Sort & Filter | List of Items */}
+          {/* Right Side of Main Screen | Categories | List of Items */}
           <Box sx={{ width: '80%' }}>
             <Box
               sx={{
                 display: 'flex',
-                borderBottom: 'solid 1px rgba(196, 196, 196, 0.5) ',
-                pb: '.625rem',
                 flexWrap: 'wrap',
               }}
             >
+              {/* Display List of Categories If Department is Valid */}
               {departmentIndex !== -1 && (
                 <>
                   <NextLink href={`/department/${router.query.department}`}>
@@ -103,15 +105,16 @@ const Category = () => {
                       sx={{
                         mr: '1rem',
                         borderRadius: '.625rem',
+                        color: 'textWhite.main',
+                        bgcolor: 'primary.main',
                         p: '1rem .3125rem',
-                        '&.MuiChip-clickable:hover': {
+                        ':hover': {
                           color: 'textWhite.main',
                           bgcolor: 'primary.main',
                         },
                       }}
                       label="All"
                       clickable
-                      variant="outlined"
                     />
                   </NextLink>
                   {arrayOfDepartments[departmentIndex].categories.map(
@@ -122,39 +125,30 @@ const Category = () => {
                 </>
               )}
             </Box>
-            {/* Sort And Filter Bar */}
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                p: '1.38rem',
-                pr: '0rem',
-              }}
-            >
-              <Button
-                sx={{
-                  '.MuiButton-endIcon': {
-                    ml: '1.5rem',
-                  },
-                }}
-                variant="string"
-                endIcon={<FiSliders sx={{ ml: '1rem' }} />}
-              >
-                Sort And Filter
-              </Button>
-            </Box>
+            {/* Displays either On Sale Products, or Respective Department Products Depending On Props */}
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              {arrayOfProducts.map((product) => (
-                <SingleProduct
-                  key={product.productID}
-                  pic={product.pic}
-                  price={product.price}
-                  productID={product.productID}
-                  quantity={product.quantity}
-                  title={product.title}
-                  unit={product.unit}
-                />
-              ))}
+              {arrayOnSaleProducts === 'no'
+                ? arrayOfProducts.map((product) => (
+                    <SingleProduct
+                      key={product.productID}
+                      pic={product.pic}
+                      price={product.price}
+                      productID={product.productID}
+                      title={product.title}
+                      unit={product.unit}
+                    />
+                  ))
+                : arrayOnSaleProducts.map((product) => (
+                    <SingleProduct
+                      key={product.productID}
+                      pic={product.pic}
+                      price={product.price}
+                      productID={product.productID}
+                      title={product.title}
+                      unit={product.unit}
+                      oldPrice={product.oldPrice}
+                    />
+                  ))}
             </Box>
           </Box>
         </Container>
@@ -164,5 +158,55 @@ const Category = () => {
     </>
   );
 };
+// Determines What Dynamic URL is Allowed, with No Fallbacks
+export async function getStaticPaths() {
+  const uri = process.env.MONGODB_URI;
+  const client = await MongoClient.connect(uri);
+  const db = client.db();
+  const listOfDepts = db.collection('ListOfDepts');
+  const arrayOfDepts = await listOfDepts.find({}).toArray();
+  client.close();
 
-export default Category;
+  return {
+    fallback: false,
+    paths: arrayOfDepts[0].array.map((department) => ({
+      params: { department },
+    })),
+  };
+}
+// Checks to see if URL is 'todays_deals', then hit db and return us a list of on sale products, else
+// assigns a no value to prop
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { params } = context;
+  const uri = process.env.MONGODB_URI;
+
+  if (params.department === 'todays_deals') {
+    const client = await MongoClient.connect(uri);
+    const db = client.db();
+
+    const dailyDealsCollection = db.collection('TodayDeals');
+    const arrayOnSaleProducts = await dailyDealsCollection.find().toArray();
+    client.close();
+    return {
+      props: {
+        arrayOnSaleProducts: arrayOnSaleProducts.map((product) => ({
+          pic: product.pic,
+          price: product.price,
+          productID: product.productID,
+          unit: product.unit,
+          title: product.title,
+          oldPrice: product.oldPrice,
+          id: product._id.toString(),
+        })),
+      },
+    };
+  }
+
+  return {
+    props: {
+      arrayOnSaleProducts: 'no',
+    },
+  };
+};
+
+export default Department;
