@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import { FaRegTimesCircle, FaMinus, FaPlus } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../redux/store/hooks';
 import { cartActions } from '../redux/reducers/cart';
 import { NextPage } from 'next';
 
@@ -10,9 +10,9 @@ interface Props {
 }
 
 const SingleProductCart: NextPage<Props> = ({ index }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { productID, totalPrice, pic, price, title, unit, quantity } =
-    useSelector((state) => state.cart.cartList[index]);
+    useAppSelector((state) => state.cart.cartList[index]);
 
   const removeItemHandler = () => {
     dispatch(cartActions.removeItem({ productID, price }));

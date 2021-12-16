@@ -4,20 +4,38 @@ import { Box, Chip, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { MongoClient } from 'mongodb';
-import { useSelector } from 'react-redux';
-import { GetStaticProps } from 'next';
+import { useAppSelector } from '../../redux/store/hooks';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import TopNavBar from '../../components/TopNavBar';
 import BottomNavBar from '../../components/BottomNavBar';
 import DepartmentSection from '../../components/DepartmentSection';
 import FilterButton from '../../components/FilterButton';
 import Footer from '../../components/Footer';
 import SingleProduct from '../../components/SingleProduct';
+import { ParsedUrlQuery } from 'querystring';
 
-const Department = (props) => {
-  const { arrayOnSaleProducts } = props;
+interface IParams extends ParsedUrlQuery {
+  department: string;
+}
+
+interface OnSaleProduct {
+  pic: string;
+  price: number;
+  productID: number;
+  unit: string;
+  title: string;
+  oldPrice: number;
+  id: string;
+}
+
+interface Props {
+  arrayOnSaleProducts: OnSaleProduct[];
+}
+
+const Department: NextPage<Props> = ({ arrayOnSaleProducts }) => {
   const router = useRouter();
-  const { arrayOfDepartments, arrayOfProducts } = useSelector(
-    (state) => state.departments
+  const { arrayOfDepartments, arrayOfProducts } = useAppSelector(
+    (state) => state.arrayDeptProducts
   );
 
   // Filters each department in the array by removing ampersand symbols, replacing spaces with underscores, and removing uppercase characters
@@ -78,8 +96,8 @@ const Department = (props) => {
                 if (index !== 0) {
                   return (
                     <DepartmentSection
-                      key={department.name}
                       iconSrc={department.iconSrc}
+                      key={department.name}
                       name={department.name}
                     />
                   );
@@ -127,7 +145,7 @@ const Department = (props) => {
             </Box>
             {/* Displays either On Sale Products, or Respective Department Products Depending On Props */}
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-              {arrayOnSaleProducts === 'no'
+              {arrayOnSaleProducts === null
                 ? arrayOfProducts.map((product) => (
                     <SingleProduct
                       key={product.productID}
@@ -159,8 +177,8 @@ const Department = (props) => {
   );
 };
 // Determines What Dynamic URL is Allowed, with No Fallbacks
-export async function getStaticPaths() {
-  const uri = process.env.MONGODB_URI;
+export const getStaticPaths: GetStaticPaths = async () => {
+  const uri: string = process.env.MONGODB_URI as string;
   const client = await MongoClient.connect(uri);
   const db = client.db();
   const listOfDepts = db.collection('ListOfDepts');
@@ -169,18 +187,18 @@ export async function getStaticPaths() {
 
   return {
     fallback: false,
-    paths: arrayOfDepts[0].array.map((department) => ({
+    paths: arrayOfDepts[0].array.map((department: string) => ({
       params: { department },
     })),
   };
-}
+};
 // Checks to see if URL is 'todays_deals', then hit db and return us a list of on sale products, else
 // assigns a no value to prop
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { params } = context;
-  const uri = process.env.MONGODB_URI;
+  const { department } = context.params as IParams;
+  const uri: string = process.env.MONGODB_URI as string;
 
-  if (params.department === 'todays_deals') {
+  if (department === 'todays_deals') {
     const client = await MongoClient.connect(uri);
     const db = client.db();
 
@@ -204,7 +222,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
-      arrayOnSaleProducts: 'no',
+      arrayOnSaleProducts: null,
     },
   };
 };

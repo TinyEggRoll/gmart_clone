@@ -3,20 +3,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Cart, ProductCart } from '../../types';
 
 const initialState: Cart = {
-  cartList: [
-    {
-      pic: '',
-      price: 0,
-      productID: 0,
-      title: '',
-      unit: '',
-      totalPrice: 0,
-      quantity: 0,
-    },
-  ],
+  cartList: [],
   cartPrice: 0,
-  cartTax: 0,
   cartQuantity: 0,
+  cartTax: 0,
 };
 
 const updateCartQuadChanges = (

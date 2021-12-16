@@ -20,43 +20,32 @@ import NextLink from 'next/link';
 import Image from 'next/image';
 import { FaSearch, FaUserCircle, FaInfoCircle } from 'react-icons/fa';
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../redux/store/hooks';
 import SingleProductCart from './SingleProductCart';
 import { NextPage } from 'next';
 
 const NavBar: NextPage = () => {
-  const [salutations, setSalutations] = React.useState('mrs');
-  const [accountPopover, setAccountPopover] = React.useState();
-  const [accountPopoverAnchor, setAccountPopoverAnchor] = React.useState(null);
-  const [signUpModal, setSignUpModal] = React.useState(false);
-  const [signInModal, setSignInModal] = React.useState(false);
-  const [forgotPasswordModal, setForgotPasswordModal] = React.useState(false);
+  const [salutations, setSalutations] = React.useState<string>('mrs');
+  const [accountPopover, setAccountPopover] = React.useState<boolean>(false);
+  const [accountPopoverAnchor, setAccountPopoverAnchor] =
+    React.useState<HTMLButtonElement | null>(null);
+  const [signUpModal, setSignUpModal] = React.useState<boolean>(false);
+  const [signInModal, setSignInModal] = React.useState<boolean>(false);
+  const [forgotPasswordModal, setForgotPasswordModal] =
+    React.useState<boolean>(false);
 
-  const { cartList, cartQuantity, cartPrice, cartTax } = useSelector(
+  const { cartList, cartQuantity, cartPrice, cartTax } = useAppSelector(
     (state) => state.cart
   );
 
-  const handleClick = (event: React.MouseEvent) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement | null>) => {
     setAccountPopoverAnchor(event.currentTarget);
   };
 
-  const style = {
-    position: 'absolute',
-    top: '45%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
-    border: 'solid 1px rgba(0, 0, 0, .2)',
-    width: '27rem',
-    borderRadius: '.375rem',
-    boxShadow: '0 5px 15px rgb(0 0 0 / 50%)',
-  };
-
-  const styles2 = {
-    fontWeight: '500',
-  };
-
-  const handleSalutations = (event, newSalutation) => {
+  const handleSalutations = (
+    event: React.MouseEvent<HTMLElement>,
+    newSalutation: string
+  ) => {
     if (newSalutation !== null) {
       setSalutations(newSalutation);
     }
@@ -76,9 +65,6 @@ const NavBar: NextPage = () => {
           bgcolor: 'secondary.main',
           height: '5rem',
           boxShadow: '0 3px 5px rgb(0 0 0 / 40%)',
-          // Consider changing the padding left and right  pl: ['null', 'null', 'null', '1rem', '1rem'],
-          // pr: ['null', 'null', 'null', '1rem', '1rem'],
-          // backgroundColor: ['null', 'null', 'null', 'red', 'green'],
         }}
         maxWidth="xl"
       >
@@ -120,7 +106,19 @@ const NavBar: NextPage = () => {
           open={forgotPasswordModal}
           onClose={() => setForgotPasswordModal(false)}
         >
-          <Box sx={style}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '45%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              bgcolor: 'background.paper',
+              border: 'solid 1px rgba(0, 0, 0, .2)',
+              width: '27rem',
+              borderRadius: '.375rem',
+              boxShadow: '0 5px 15px rgb(0 0 0 / 50%)',
+            }}
+          >
             {/* Top Heading */}
             <Box
               sx={{
@@ -162,7 +160,7 @@ const NavBar: NextPage = () => {
                   width: '100%',
                 }}
               >
-                <Typography sx={{ ...styles2 }}>E-mail</Typography>
+                <Typography sx={{ fontWeight: '500' }}>E-mail</Typography>
                 <TextField
                   sx={{
                     '.MuiFilledInput-root': {
@@ -223,7 +221,21 @@ const NavBar: NextPage = () => {
         </Modal>
 
         <Modal open={signInModal} onClose={() => setSignInModal(false)}>
-          <Box sx={style} component="form" noValidate>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '45%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              bgcolor: 'background.paper',
+              border: 'solid 1px rgba(0, 0, 0, .2)',
+              width: '27rem',
+              borderRadius: '.375rem',
+              boxShadow: '0 5px 15px rgb(0 0 0 / 50%)',
+            }}
+            component="form"
+            noValidate
+          >
             {/* Top Heading */}
             <Box
               sx={{
@@ -261,7 +273,7 @@ const NavBar: NextPage = () => {
                   width: '100%',
                 }}
               >
-                <Typography sx={{ ...styles2 }}>E-mail</Typography>
+                <Typography sx={{ fontWeight: '500' }}>E-mail</Typography>
                 <TextField
                   sx={{
                     '.MuiFilledInput-root': {
@@ -283,7 +295,7 @@ const NavBar: NextPage = () => {
                 />
               </Box>
               <Box sx={{ marginTop: '1rem' }}>
-                <Typography sx={{ ...styles2 }}>Password</Typography>
+                <Typography sx={{ fontWeight: '500' }}>Password</Typography>
                 <TextField
                   sx={{
                     '.MuiFilledInput-root': {
@@ -355,7 +367,21 @@ const NavBar: NextPage = () => {
         </Modal>
 
         <Modal open={signUpModal} onClose={() => setSignUpModal(false)}>
-          <Box sx={style} component="form" noValidate>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '45%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              bgcolor: 'background.paper',
+              border: 'solid 1px rgba(0, 0, 0, .2)',
+              width: '27rem',
+              borderRadius: '.375rem',
+              boxShadow: '0 5px 15px rgb(0 0 0 / 50%)',
+            }}
+            component="form"
+            noValidate
+          >
             {/* Top Heading */}
             <Box
               sx={{
@@ -387,7 +413,7 @@ const NavBar: NextPage = () => {
               component="form"
             >
               <Box>
-                <Typography sx={{ ...styles2 }}>Salutation</Typography>
+                <Typography sx={{ fontWeight: '500' }}>Salutation</Typography>
                 <ToggleButtonGroup
                   sx={{
                     '& .MuiToggleButton-root.Mui-selected': {
@@ -455,7 +481,7 @@ const NavBar: NextPage = () => {
                   width: '100%',
                 }}
               >
-                <Typography sx={{ ...styles2 }}>First Name</Typography>
+                <Typography sx={{ fontWeight: '500' }}>First Name</Typography>
                 <TextField
                   sx={{
                     '.MuiFilledInput-root': {
@@ -477,7 +503,7 @@ const NavBar: NextPage = () => {
                 />
               </Box>
               <Box sx={{ marginTop: '1rem' }}>
-                <Typography sx={{ ...styles2 }}>Last Name</Typography>
+                <Typography sx={{ fontWeight: '500' }}>Last Name</Typography>
                 <TextField
                   sx={{
                     '.MuiFilledInput-root': {
@@ -499,7 +525,7 @@ const NavBar: NextPage = () => {
                 />
               </Box>
               <Box sx={{ marginTop: '1rem' }}>
-                <Typography sx={{ ...styles2 }}>E-mail</Typography>
+                <Typography sx={{ fontWeight: '500' }}>E-mail</Typography>
                 <TextField
                   sx={{
                     '.MuiFilledInput-root': {
@@ -521,7 +547,7 @@ const NavBar: NextPage = () => {
                 />
               </Box>
               <Box sx={{ marginTop: '1rem' }}>
-                <Typography sx={{ ...styles2 }}>Password</Typography>
+                <Typography sx={{ fontWeight: '500' }}>Password</Typography>
                 <TextField
                   sx={{
                     '.MuiFilledInput-root': {
@@ -543,7 +569,9 @@ const NavBar: NextPage = () => {
                 />
               </Box>
               <Box sx={{ marginTop: '1rem' }}>
-                <Typography sx={{ ...styles2 }}>Confirm Password</Typography>
+                <Typography sx={{ fontWeight: '500' }}>
+                  Confirm Password
+                </Typography>
                 <TextField
                   sx={{
                     '.MuiFilledInput-root': {
@@ -840,7 +868,7 @@ const NavBar: NextPage = () => {
                     </Box>
                     {/* Actual List of Products */}
                     <Box>
-                      {cartList.map((product, index) => (
+                      {cartList?.map((product, index) => (
                         <SingleProductCart
                           key={product.productID}
                           index={index}
@@ -901,7 +929,7 @@ const NavBar: NextPage = () => {
                           sx={{
                             fontWeight: '500',
                           }}
-                          variant="h7"
+                          variant="h6"
                         >
                           CHECKOUT $
                           {Math.round(

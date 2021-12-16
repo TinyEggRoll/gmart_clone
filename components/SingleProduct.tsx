@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { FaSearchPlus, FaMinus, FaPlus, FaTrash } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../redux/store/hooks';
 import { cartActions } from '../redux/reducers/cart';
 import { NextPage } from 'next';
-
-interface Props {
-  productID: number;
-  pic: string;
-  price: number;
-  title: string;
-  unit: string;
-  oldPrice?: string;
+import { Product } from '../types';
+interface Props extends Product {
+  oldPrice?: number;
 }
 
 const SingleProduct: NextPage<Props> = ({
@@ -22,12 +17,11 @@ const SingleProduct: NextPage<Props> = ({
   unit,
   oldPrice = null,
 }) => {
-  const dispatch = useDispatch();
-  const { cartList } = useSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
+  const { cartList } = useAppSelector((state) => state.cart);
   const productIndex = cartList.findIndex(
     (product) => product.productID === productID
   );
-
   const singleProductStyle = {
     backgroundImage: `${pic}`,
     backgroundSize: 'cover',

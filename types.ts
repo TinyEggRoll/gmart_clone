@@ -21,8 +21,8 @@ export interface Cart {
 export interface Department {
   name: string;
   imgSrc: string;
-  iconSrc?: string;
-  categories?: string[];
+  iconSrc: string;
+  categories: string[];
 }
 
 export interface DeptProduct {

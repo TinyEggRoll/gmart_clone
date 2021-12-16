@@ -1,12 +1,14 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { DeptProduct } from '../../types';
 
 const initialState: DeptProduct = {
   arrayOfDepartments: [
     {
+      iconSrc: 'null',
       name: "Today's Deals",
       imgSrc: '/images/department_images/today_deals.png',
+      categories: ['null'],
     },
     {
       iconSrc: '/images/department_icons/alcohol.svg',
@@ -408,11 +410,11 @@ const initialState: DeptProduct = {
   ],
 };
 // Array of Products should be under each category, for each department, but for testing purposes will be stored separately.
-const departmentsSlice = createSlice({
+const arrayDeptProductsSlice = createSlice({
   name: 'departments',
   initialState,
   reducers: {},
 });
 
-export const departmentsActions = departmentsSlice.actions;
-export default departmentsSlice.reducer;
+export const departmentsActions = arrayDeptProductsSlice.actions;
+export default arrayDeptProductsSlice.reducer;

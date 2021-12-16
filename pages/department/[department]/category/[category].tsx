@@ -3,18 +3,19 @@ import { Box, Button, Chip, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { FiSliders } from 'react-icons/fi';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../../redux/store/hooks';
 import TopNavBar from '../../../../components/TopNavBar';
 import BottomNavBar from '../../../../components/BottomNavBar';
 import DepartmentSection from '../../../../components/DepartmentSection';
 import FilterButton from '../../../../components/FilterButton';
 import Footer from '../../../../components/Footer';
 import SingleProduct from '../../../../components/SingleProduct';
+import { NextPage } from 'next';
 
-const Category = () => {
+const Category: NextPage = () => {
   const router = useRouter();
-  const { arrayOfDepartments, arrayOfProducts } = useSelector(
-    (state) => state.departments
+  const { arrayOfDepartments, arrayOfProducts } = useAppSelector(
+    (state) => state.arrayDeptProducts
   );
 
   // Filters each department in the array by removing ampersand symbols, replacing spaces with underscores, and removing uppercase characters
@@ -137,8 +138,8 @@ const Category = () => {
                     ml: '1.5rem',
                   },
                 }}
-                variant="string"
-                endIcon={<FiSliders sx={{ ml: '1rem' }} />}
+                variant="text"
+                endIcon={<FiSliders />}
               >
                 Sort And Filter
               </Button>
@@ -150,7 +151,6 @@ const Category = () => {
                   pic={product.pic}
                   price={product.price}
                   productID={product.productID}
-                  quantity={product.quantity}
                   title={product.title}
                   unit={product.unit}
                 />
